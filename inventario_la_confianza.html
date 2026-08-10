@@ -15,10 +15,11 @@
   header{background:var(--rojo);color:#fff;padding:18px 22px;border-radius:14px;box-shadow:0 4px 14px rgba(0,0,0,.15);}
   header h1{font-size:22px;display:flex;align-items:center;gap:10px;}
   header p{opacity:.9;font-size:13px;margin-top:4px;}
+  .nube-bar{background:#fff;border-radius:12px;padding:10px 16px;margin:14px 0;box-shadow:0 2px 8px rgba(0,0,0,.06);display:flex;flex-wrap:wrap;gap:12px;align-items:center;border-left:5px solid #1565c0;}
+  .nube-estado{font-size:13px;font-weight:600;flex:1;min-width:180px;}
   .periodo-banner{background:#fff;border-radius:12px;padding:12px 16px;margin:14px 0;box-shadow:0 2px 8px rgba(0,0,0,.06);display:flex;flex-wrap:wrap;gap:16px;align-items:center;border-left:5px solid var(--naranja);}
   .periodo-banner .campo{display:flex;flex-direction:column;gap:3px;}
   .periodo-banner label{font-size:11px;color:#78909c;text-transform:uppercase;letter-spacing:.5px;}
-  .periodo-banner input[type=date]{padding:8px;border:1px solid var(--borde);border-radius:8px;font-size:14px;}
   .periodo-banner .titulo{font-weight:700;color:var(--rojo);font-size:15px;}
   .barra{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin:16px 0;}
   .barra input[type=text]{flex:1;min-width:180px;padding:10px 12px;border:1px solid var(--borde);border-radius:10px;font-size:14px;}
@@ -26,6 +27,7 @@
   .btn-rojo{background:var(--rojo);color:#fff;} .btn-rojo:hover{background:var(--rojo-osc);}
   .btn-gris{background:var(--gris);color:var(--texto);} .btn-gris:hover{background:#cfd8dc;}
   .btn-naranja{background:var(--naranja);color:#fff;} .btn-naranja:hover{background:#c95500;}
+  .btn-azul{background:#1565c0;color:#fff;} .btn-azul:hover{background:#0d47a1;}
   .tarjetas{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin-bottom:16px;}
   .tarjeta{background:#fff;border-radius:12px;padding:14px;box-shadow:0 2px 8px rgba(0,0,0,.06);border-left:5px solid var(--rojo);}
   .tarjeta .num{font-size:26px;font-weight:700;}
@@ -49,29 +51,34 @@
   .agregar{background:#fff;border-radius:12px;padding:14px;margin-top:14px;box-shadow:0 2px 8px rgba(0,0,0,.06);display:flex;flex-wrap:wrap;gap:8px;align-items:flex-end;}
   .agregar label{font-size:12px;color:#78909c;display:block;margin-bottom:3px;}
   .agregar input{padding:8px;border:1px solid var(--borde);border-radius:8px;font-size:14px;}
-  /* Historial */
   .historial{background:#fff;border-radius:12px;padding:14px 16px;margin-top:14px;box-shadow:0 2px 8px rgba(0,0,0,.06);}
   .historial h3{color:var(--rojo);font-size:15px;margin-bottom:8px;}
   .historial table{min-width:auto;}
   .historial th{background:#8d6e63;}
-  /* Modal */
   .modal-fondo{display:none;position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:50;align-items:center;justify-content:center;padding:16px;}
   .modal-fondo.abierto{display:flex;}
-  .modal{background:#fff;border-radius:16px;padding:22px;max-width:420px;width:100%;box-shadow:0 10px 40px rgba(0,0,0,.3);}
+  .modal{background:#fff;border-radius:16px;padding:22px;max-width:460px;width:100%;box-shadow:0 10px 40px rgba(0,0,0,.3);max-height:90vh;overflow:auto;}
   .modal h2{color:var(--rojo);font-size:19px;margin-bottom:6px;}
   .modal p{font-size:13px;color:#607d8b;margin-bottom:16px;}
   .modal .campo{margin-bottom:14px;}
   .modal label{display:block;font-size:12px;color:#78909c;margin-bottom:4px;text-transform:uppercase;letter-spacing:.5px;}
   .modal input{width:100%;padding:10px;border:1px solid var(--borde);border-radius:8px;font-size:15px;}
-  .modal .acciones{display:flex;gap:10px;justify-content:flex-end;margin-top:8px;}
-  @media print{.barra,.agregar,.borrar,button,.modal-fondo{display:none!important;}body{background:#fff;}}
+  .modal .acciones{display:flex;gap:10px;justify-content:flex-end;margin-top:8px;flex-wrap:wrap;}
+  .nota{font-size:12px;background:#e3f2fd;color:#0d47a1;padding:8px 10px;border-radius:8px;margin-top:8px;}
+  @media print{.barra,.agregar,.borrar,button,.modal-fondo,.nube-bar{display:none!important;}body{background:#fff;}}
 </style>
 </head>
 <body>
 <header>
   <h1>🥩 Carnicería La Confianza — Control de Inventario</h1>
-  <p>Escribe cuánto había (inicial), cuánto ingresó y cuánto hay hoy. El <b>gasto</b> se calcula solo. Los datos se guardan en este navegador.</p>
+  <p>Escribe cuánto había (inicial), cuánto ingresó y cuánto hay hoy. El <b>gasto</b> se calcula solo.</p>
 </header>
+
+<div class="nube-bar">
+  <span class="nube-estado" id="nubeEstado">💾 Modo local (los datos solo se guardan en este navegador)</span>
+  <button class="btn-azul" onclick="abrirNube()">☁️ Configurar nube compartida</button>
+  <button class="btn-gris" onclick="cargarNube(true)">🔄 Actualizar</button>
+</div>
 
 <div class="periodo-banner">
   <span class="titulo">📅 Periodo actual</span>
@@ -85,7 +92,7 @@
   <input type="text" id="buscar" placeholder="🔎 Buscar producto...">
   <button class="btn-gris" onclick="window.print()">🖨️ Imprimir / PDF</button>
   <button class="btn-gris" onclick="exportarCSV()">⬇️ Exportar CSV</button>
-  <button class="btn-gris" onclick="respaldarJSON()">💾 Respaldar todo</button>
+  <button class="btn-gris" onclick="respaldarJSON()">💾 Respaldar</button>
   <button class="btn-gris" onclick="document.getElementById('archivoRestore').click()">📂 Restaurar</button>
   <input type="file" id="archivoRestore" accept=".json,application/json" style="display:none" onchange="restaurarJSON(this)">
   <button class="btn-naranja" onclick="abrirModal()">🔄 Nuevo periodo</button>
@@ -129,7 +136,7 @@
   </div>
 </div>
 
-<footer>Guardado automáticamente en tu navegador · Gasto = Inicial + Ingresos − Actual</footer>
+<footer>Gasto = Inicial + Ingresos − Actual · Con nube compartida, todos ven la misma información.</footer>
 
 <!-- Modal nuevo periodo -->
 <div class="modal-fondo" id="modal">
@@ -147,6 +154,32 @@
     <div class="acciones">
       <button class="btn-gris" onclick="cerrarModal()">Cancelar</button>
       <button class="btn-naranja" onclick="confirmarNuevoPeriodo()">Iniciar nuevo periodo</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal nube -->
+<div class="modal-fondo" id="modalNube">
+  <div class="modal">
+    <h2>☁️ Nube compartida (jsonbin.io)</h2>
+    <p>Conecta esta app a un almacén de jsonbin.io para que todos vean y editen el mismo inventario. La clave se guarda solo en este navegador, no en internet.</p>
+    <div class="campo">
+      <label>Clave de jsonbin (X-Master-Key)</label>
+      <input type="password" id="nbKey" placeholder="Pega aquí tu Master Key">
+    </div>
+    <div class="campo">
+      <label>ID del almacén (Bin ID)</label>
+      <input type="text" id="nbBin" placeholder="Déjalo vacío para crear uno nuevo">
+    </div>
+    <div class="acciones">
+      <button class="btn-gris" onclick="cerrarNube()">Cancelar</button>
+      <button class="btn-azul" onclick="crearBin()">Crear almacén nuevo</button>
+      <button class="btn-azul" onclick="conectarBin()">Conectar</button>
+    </div>
+    <div id="nbMsg" class="nota" style="display:none"></div>
+    <div class="nota">Comparte el <b>Bin ID</b> y la <b>clave</b> solo con tu equipo de confianza. Quien los tenga podrá ver y editar el inventario.</div>
+    <div class="acciones" style="justify-content:flex-start">
+      <button class="btn-gris" onclick="desconectarNube()">Desconectar de la nube</button>
     </div>
   </div>
 </div>
@@ -183,17 +216,18 @@ const DEFAULTS = [
 ];
 
 const KEY = "inventario_confianza_v2";
+const CLOUD_KEY = "inventario_confianza_cloud";
 let estado_app = cargar();
 let productos = estado_app.productos;
+let cloud = cargarCloudCfg();
 
 function hoyISO(){ return new Date().toISOString().slice(0,10); }
-// --- Fechas en formato dd/mm/aaaa ---
 function isoToDMY(iso){ if(!iso) return ""; const [y,m,d]=iso.split("-"); return `${d}/${m}/${y}`; }
 function hoyDMY(){ return isoToDMY(hoyISO()); }
 function dmyToISO(s){
   if(!s) return "";
   const m = s.trim().match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})$/);
-  if(!m) return null; // formato inválido
+  if(!m) return null;
   const d=+m[1], mo=+m[2], y=+m[3];
   if(mo<1||mo>12||d<1||d>31) return null;
   return `${y}-${String(mo).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
@@ -206,29 +240,103 @@ function mascaraFecha(el){
 }
 
 function cargar(){
-  // v2
   try{
     const g = localStorage.getItem(KEY);
     if(g){ const o = JSON.parse(g); if(o && o.productos) return o; }
   }catch(e){}
-  // migrar desde v1 (solo array de productos)
   try{
     const v1 = localStorage.getItem("inventario_confianza_v1");
-    if(v1){
-      const arr = JSON.parse(v1);
-      if(Array.isArray(arr)) return {productos:arr, periodoInicio:hoyISO(), periodoFin:"", historial:[]};
-    }
+    if(v1){ const arr = JSON.parse(v1); if(Array.isArray(arr)) return {productos:arr, periodoInicio:hoyISO(), periodoFin:"", historial:[]}; }
   }catch(e){}
-  // nuevo
-  return {
-    productos: DEFAULTS.map(d=>({...d, ingresos:0, actual:d.inicial})),
-    periodoInicio: hoyISO(),
-    periodoFin: "",
-    historial: []
-  };
+  return { productos: DEFAULTS.map(d=>({...d, ingresos:0, actual:d.inicial})), periodoInicio: hoyISO(), periodoFin: "", historial: [] };
 }
-function guardar(){ try{localStorage.setItem(KEY, JSON.stringify(estado_app));}catch(e){} }
+function guardarLocal(){ try{localStorage.setItem(KEY, JSON.stringify(estado_app));}catch(e){} }
+function guardar(){ guardarLocal(); guardarNube(); }
 
+/* ---------- NUBE (jsonbin.io) ---------- */
+function cargarCloudCfg(){ try{ return JSON.parse(localStorage.getItem(CLOUD_KEY)) || {key:"",bin:""}; }catch(e){ return {key:"",bin:""}; } }
+function guardarCloudCfg(){ try{ localStorage.setItem(CLOUD_KEY, JSON.stringify(cloud)); }catch(e){} }
+function nubeOn(){ return !!(cloud.key && cloud.bin); }
+function setEstadoNube(txt,color){ const e=document.getElementById("nubeEstado"); if(e){ e.textContent=txt; e.style.color=color||"#455a64"; } }
+function abrirNube(){
+  document.getElementById("nbKey").value = cloud.key || "";
+  document.getElementById("nbBin").value = cloud.bin || "";
+  document.getElementById("nbMsg").style.display="none";
+  document.getElementById("modalNube").classList.add("abierto");
+}
+function cerrarNube(){ document.getElementById("modalNube").classList.remove("abierto"); }
+function nbMostrar(msg,color){ const e=document.getElementById("nbMsg"); e.style.display="block"; e.textContent=msg; e.style.background = color==="err"?"#ffebee":"#e8f5e9"; e.style.color = color==="err"?"#c62828":"#2e7d32"; }
+function desconectarNube(){ cloud={key:"",bin:""}; guardarCloudCfg(); setEstadoNube("💾 Modo local (los datos solo se guardan en este navegador)","#455a64"); cerrarNube(); }
+
+async function crearBin(){
+  const key = document.getElementById("nbKey").value.trim();
+  if(!key){ nbMostrar("Escribe tu clave (Master Key) primero.","err"); return; }
+  nbMostrar("Creando almacén...","ok");
+  try{
+    const r = await fetch("https://api.jsonbin.io/v3/b",{
+      method:"POST",
+      headers:{"Content-Type":"application/json","X-Master-Key":key,"X-Bin-Name":"Inventario La Confianza","X-Bin-Private":"true"},
+      body: JSON.stringify(estado_app)
+    });
+    const j = await r.json();
+    if(!r.ok){ throw new Error((j&&j.message)||("HTTP "+r.status)); }
+    const binId = j.metadata && j.metadata.id;
+    cloud = {key, bin:binId}; guardarCloudCfg();
+    document.getElementById("nbBin").value = binId;
+    nbMostrar("✅ Almacén creado. ID: "+binId+" — cópialo para tu equipo.","ok");
+    setEstadoNube("☁️ Conectado a la nube","#2e7d32");
+  }catch(e){ nbMostrar("Error al crear: "+e.message,"err"); }
+}
+async function conectarBin(){
+  const key = document.getElementById("nbKey").value.trim();
+  const bin = document.getElementById("nbBin").value.trim();
+  if(!key || !bin){ nbMostrar("Escribe la clave y el ID del almacén.","err"); return; }
+  cloud = {key, bin}; guardarCloudCfg();
+  nbMostrar("Conectando...","ok");
+  const ok = await cargarNube(false);
+  if(ok){ nbMostrar("✅ Conectado. La información ahora es compartida.","ok"); setTimeout(cerrarNube, 900); }
+}
+
+async function cargarNube(manual){
+  if(!nubeOn()){ if(manual) setEstadoNube("💾 Modo local — configura la nube para compartir","#ef6c00"); return false; }
+  setEstadoNube("☁️ Cargando de la nube...","#ef6c00");
+  try{
+    const r = await fetch("https://api.jsonbin.io/v3/b/"+encodeURIComponent(cloud.bin)+"/latest",{ headers:{"X-Master-Key":cloud.key} });
+    if(!r.ok){ throw new Error("HTTP "+r.status); }
+    const j = await r.json();
+    const rec = j.record;
+    if(rec && Array.isArray(rec.productos)){
+      estado_app = rec; estado_app.historial = estado_app.historial||[]; productos = estado_app.productos;
+      guardarLocal(); render();
+      setEstadoNube("☁️ Conectado — información compartida (actualizado "+new Date().toLocaleTimeString()+")","#2e7d32");
+      return true;
+    } else {
+      setEstadoNube("☁️ Almacén vacío — se subió el inventario actual","#ef6c00");
+      await guardarNube(true); return true;
+    }
+  }catch(e){ setEstadoNube("⚠️ Error de nube: "+e.message,"#c62828"); return false; }
+}
+
+let saveTimer=null;
+function guardarNube(inmediato){
+  if(!nubeOn()) return;
+  clearTimeout(saveTimer);
+  const doSave = async ()=>{
+    setEstadoNube("☁️ Guardando...","#ef6c00");
+    try{
+      const r = await fetch("https://api.jsonbin.io/v3/b/"+encodeURIComponent(cloud.bin),{
+        method:"PUT",
+        headers:{"Content-Type":"application/json","X-Master-Key":cloud.key},
+        body: JSON.stringify(estado_app)
+      });
+      if(!r.ok){ throw new Error("HTTP "+r.status); }
+      setEstadoNube("☁️ Guardado en la nube ("+new Date().toLocaleTimeString()+")","#2e7d32");
+    }catch(e){ setEstadoNube("⚠️ No se pudo guardar en la nube: "+e.message,"#c62828"); }
+  };
+  if(inmediato) doSave(); else saveTimer=setTimeout(doSave, 900);
+}
+
+/* ---------- Lógica de inventario ---------- */
 function gasto(it){ return Math.max(0, (Number(it.inicial)||0)+(Number(it.ingresos)||0)-(Number(it.actual)||0)); }
 function estadoStock(it){
   const a = Number(it.actual)||0;
@@ -301,10 +409,7 @@ function renderHistorial(){
     </tr>`).join("");
 }
 
-function edit(i, campo, val){
-  productos[i][campo] = Number(val)||0;
-  guardar(); render();
-}
+function edit(i, campo, val){ productos[i][campo] = Number(val)||0; guardar(); render(); }
 function editPeriodo(){
   const ini = document.getElementById("pInicio").value.trim();
   const fin = document.getElementById("pFin").value.trim();
@@ -314,9 +419,7 @@ function editPeriodo(){
   else estado_app.periodoFin="";
   guardar();
 }
-function eliminar(i){
-  if(confirm("¿Eliminar "+productos[i].nombre+"?")){ productos.splice(i,1); guardar(); render(); }
-}
+function eliminar(i){ if(confirm("¿Eliminar "+productos[i].nombre+"?")){ productos.splice(i,1); guardar(); render(); } }
 function agregarProducto(){
   const nombre = document.getElementById("nProd").value.trim();
   if(!nombre){ alert("Escribe el nombre del producto."); return; }
@@ -328,15 +431,12 @@ function agregarProducto(){
     inicial, ingresos:0, actual:inicial,
     min: Number(document.getElementById("nMin").value)||0
   });
-  document.getElementById("nProd").value="";
-  document.getElementById("nUnidad").value="";
-  document.getElementById("nInicial").value="0";
-  document.getElementById("nCat").value="";
+  document.getElementById("nProd").value=""; document.getElementById("nUnidad").value="";
+  document.getElementById("nInicial").value="0"; document.getElementById("nCat").value="";
   document.getElementById("nMin").value="2";
   guardar(); render();
 }
 
-/* ---- Nuevo periodo con fechas ---- */
 function abrirModal(){
   document.getElementById("mFinAnterior").value = isoToDMY(estado_app.periodoFin) || hoyDMY();
   document.getElementById("mInicioNuevo").value = hoyDMY();
@@ -347,18 +447,13 @@ function confirmarNuevoPeriodo(){
   const finAnterior = dmyToISO(document.getElementById("mFinAnterior").value);
   const inicioNuevo = dmyToISO(document.getElementById("mInicioNuevo").value);
   if(!finAnterior || !inicioNuevo){ alert("Ingresa ambas fechas en formato dd/mm/aaaa."); return; }
-  // Guardar periodo actual en el historial
   estado_app.historial = estado_app.historial || [];
   estado_app.historial.push({
-    desde: estado_app.periodoInicio || "",
-    hasta: finAnterior,
-    totalGasto: productos.reduce((s,it)=>s+gasto(it),0),
-    numProductos: productos.length
+    desde: estado_app.periodoInicio || "", hasta: finAnterior,
+    totalGasto: productos.reduce((s,it)=>s+gasto(it),0), numProductos: productos.length
   });
-  // Iniciar nuevo periodo: actual -> inicial, ingresos = 0
   productos.forEach(it=>{ it.inicial = Number(it.actual)||0; it.ingresos = 0; });
-  estado_app.periodoInicio = inicioNuevo;
-  estado_app.periodoFin = "";
+  estado_app.periodoInicio = inicioNuevo; estado_app.periodoFin = "";
   guardar(); cerrarModal(); render();
 }
 
@@ -374,39 +469,26 @@ function exportarCSV(){
     estado_app.historial.forEach(p=>{ csv += [fmtFecha(p.desde),fmtFecha(p.hasta),p.totalGasto,p.numProductos].join(",")+"\n"; });
   }
   const blob = new Blob(["﻿"+csv],{type:"text/csv;charset=utf-8;"});
-  const a = document.createElement("a");
-  a.href = URL.createObjectURL(blob);
-  const etq = (estado_app.periodoInicio||"periodo");
-  a.download = "inventario_la_confianza_"+etq+".csv";
-  a.click();
+  const a = document.createElement("a"); a.href = URL.createObjectURL(blob);
+  a.download = "inventario_la_confianza_"+(estado_app.periodoInicio||"periodo")+".csv"; a.click();
 }
 
-/* ---- Respaldo y restauración de TODA la información ---- */
 function respaldarJSON(){
-  const datos = JSON.stringify(estado_app, null, 2);
-  const blob = new Blob([datos], {type:"application/json"});
-  const a = document.createElement("a");
-  a.href = URL.createObjectURL(blob);
-  a.download = "respaldo_inventario_"+hoyISO()+".json";
-  a.click();
+  const blob = new Blob([JSON.stringify(estado_app, null, 2)], {type:"application/json"});
+  const a = document.createElement("a"); a.href = URL.createObjectURL(blob);
+  a.download = "respaldo_inventario_"+hoyISO()+".json"; a.click();
 }
 function restaurarJSON(input){
-  const file = input.files[0];
-  if(!file) return;
+  const file = input.files[0]; if(!file) return;
   const lector = new FileReader();
   lector.onload = e=>{
     try{
       const o = JSON.parse(e.target.result);
       if(!o || !Array.isArray(o.productos)) throw new Error("formato");
       if(!confirm("Esto reemplazará la información actual con la del respaldo. ¿Continuar?")) { input.value=""; return; }
-      estado_app = o;
-      estado_app.historial = estado_app.historial || [];
-      productos = estado_app.productos;
-      guardar(); render();
-      alert("Información restaurada correctamente.");
-    }catch(err){
-      alert("El archivo no es un respaldo válido de esta app.");
-    }
+      estado_app = o; estado_app.historial = estado_app.historial || []; productos = estado_app.productos;
+      guardar(); render(); alert("Información restaurada correctamente.");
+    }catch(err){ alert("El archivo no es un respaldo válido de esta app."); }
     input.value="";
   };
   lector.readAsText(file);
@@ -414,7 +496,11 @@ function restaurarJSON(input){
 
 document.getElementById("buscar").addEventListener("input", render);
 document.getElementById("modal").addEventListener("click", e=>{ if(e.target.id==="modal") cerrarModal(); });
+document.getElementById("modalNube").addEventListener("click", e=>{ if(e.target.id==="modalNube") cerrarNube(); });
+window.addEventListener("focus", ()=>{ if(nubeOn()) cargarNube(false); });
+
 render();
+if(nubeOn()){ cargarNube(true); } else { setEstadoNube("💾 Modo local (los datos solo se guardan en este navegador). Toca “Configurar nube compartida” para que todos vean lo mismo.","#455a64"); }
 </script>
 </body>
 </html>
