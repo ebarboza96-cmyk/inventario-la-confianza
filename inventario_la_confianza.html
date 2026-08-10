@@ -177,10 +177,12 @@
       <button class="btn-azul" onclick="conectarBin()">Conectar</button>
     </div>
     <div id="nbMsg" class="nota" style="display:none"></div>
-    <div class="nota">Comparte el <b>Bin ID</b> y la <b>clave</b> solo con tu equipo de confianza. Quien los tenga podrá ver y editar el inventario.</div>
-    <div class="acciones" style="justify-content:flex-start">
-      <button class="btn-gris" onclick="desconectarNube()">Desconectar de la nube</button>
+    <div class="nota"><b>Para que todos queden conectados solos:</b> después de crear/conectar el almacén, pulsa el botón verde de abajo, sube el archivo descargado a GitHub (reemplazando el actual) y listo — nadie más tendrá que configurar nada.</div>
+    <div class="acciones" style="justify-content:space-between">
+      <button class="btn-gris" onclick="descargarCompartida()" style="background:#2e7d32;color:#fff">⬇️ Descargar versión para todos</button>
+      <button class="btn-gris" onclick="desconectarNube()">Desconectar</button>
     </div>
+    <div class="nota">Comparte el enlace solo con tu equipo de confianza: quien lo abra podrá ver y editar el inventario.</div>
   </div>
 </div>
 
@@ -217,9 +219,14 @@ const DEFAULTS = [
 
 const KEY = "inventario_confianza_v2";
 const CLOUD_KEY = "inventario_confianza_cloud";
+/* === Configuración compartida para TODOS ===
+   Se llena sola al usar el botón "Descargar versión para todos".
+   Cuando tiene datos, cualquiera que abra el enlace queda conectado automáticamente. */
+const SHARED = { bin: "", key: "" };
 let estado_app = cargar();
 let productos = estado_app.productos;
 let cloud = cargarCloudCfg();
+if(SHARED.bin && SHARED.key){ cloud = {bin:SHARED.bin, key:SHARED.key}; guardarCloudCfg(); }
 
 function hoyISO(){ return new Date().toISOString().slice(0,10); }
 function isoToDMY(iso){ if(!iso) return ""; const [y,m,d]=iso.split("-"); return `${d}/${m}/${y}`; }
@@ -268,6 +275,21 @@ function cerrarNube(){ document.getElementById("modalNube").classList.remove("ab
 function nbMostrar(msg,color){ const e=document.getElementById("nbMsg"); e.style.display="block"; e.textContent=msg; e.style.background = color==="err"?"#ffebee":"#e8f5e9"; e.style.color = color==="err"?"#c62828":"#2e7d32"; }
 function desconectarNube(){ cloud={key:"",bin:""}; guardarCloudCfg(); setEstadoNube("💾 Modo local (los datos solo se guardan en este navegador)","#455a64"); cerrarNube(); }
 
+async function descargarCompartida(){
+  if(!nubeOn()){ nbMostrar("Primero crea o conecta un almacén (arriba).","err"); return; }
+  nbMostrar("Generando versión compartida...","ok");
+  try{
+    const resp = await fetch(location.href.split("#")[0].split("?")[0]);
+    let src = await resp.text();
+    const linea = 'const SHARED = { bin: "'+cloud.bin+'", key: "'+cloud.key+'" };';
+    if(!/const SHARED = \{[^}]*\};/.test(src)){ nbMostrar("No encontré el punto de configuración en el archivo.","err"); return; }
+    src = src.replace(/const SHARED = \{[^}]*\};/, linea);
+    const blob = new Blob([src], {type:"text/html"});
+    const a = document.createElement("a"); a.href = URL.createObjectURL(blob);
+    a.download = "inventario_la_confianza.html"; a.click();
+    nbMostrar("✅ Descargado. Sube ese archivo a GitHub (reemplaza el actual) y todos quedarán conectados solos.","ok");
+  }catch(e){ nbMostrar("Error al generar: "+e.message,"err"); }
+}
 async function crearBin(){
   const key = document.getElementById("nbKey").value.trim();
   if(!key){ nbMostrar("Escribe tu clave (Master Key) primero.","err"); return; }
