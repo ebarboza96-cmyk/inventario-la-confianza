@@ -8,153 +8,206 @@
   :root{
     --rojo:#b71c1c; --rojo-osc:#7f0000; --crema:#fff8f2;
     --verde:#2e7d32; --naranja:#ef6c00; --gris:#eceff1;
-    --texto:#263238; --borde:#d7ccc8;
+    --texto:#263238; --borde:#d7ccc8; --azul:#1565c0;
   }
-  *{box-sizing:border-box;margin:0;padding:0;}
-  body{font-family:'Segoe UI',system-ui,Arial,sans-serif;background:var(--crema);color:var(--texto);padding:16px;}
-  header{background:var(--rojo);color:#fff;padding:18px 22px;border-radius:14px;box-shadow:0 4px 14px rgba(0,0,0,.15);}
-  header h1{font-size:22px;display:flex;align-items:center;gap:10px;}
-  header p{opacity:.9;font-size:13px;margin-top:4px;}
-  .nube-bar{background:#fff;border-radius:12px;padding:10px 16px;margin:14px 0;box-shadow:0 2px 8px rgba(0,0,0,.06);display:flex;flex-wrap:wrap;gap:12px;align-items:center;border-left:5px solid #1565c0;}
-  .nube-estado{font-size:13px;font-weight:600;flex:1;min-width:180px;}
-  .periodo-banner{background:#fff;border-radius:12px;padding:12px 16px;margin:14px 0;box-shadow:0 2px 8px rgba(0,0,0,.06);display:flex;flex-wrap:wrap;gap:16px;align-items:center;border-left:5px solid var(--naranja);}
-  .periodo-banner .campo{display:flex;flex-direction:column;gap:3px;}
+  *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
+  body{font-family:'Segoe UI',system-ui,Arial,sans-serif;background:var(--crema);color:var(--texto);padding:12px;max-width:900px;margin:0 auto;}
+  header{background:var(--rojo);color:#fff;padding:16px 18px;border-radius:14px;box-shadow:0 4px 14px rgba(0,0,0,.15);}
+  header h1{font-size:19px;display:flex;align-items:center;gap:8px;line-height:1.2;}
+  header p{opacity:.9;font-size:12.5px;margin-top:5px;}
+  .nube-bar{background:#fff;border-radius:12px;padding:10px 14px;margin:12px 0;box-shadow:0 2px 8px rgba(0,0,0,.06);display:flex;flex-wrap:wrap;gap:10px;align-items:center;border-left:5px solid var(--azul);}
+  .nube-estado{font-size:12.5px;font-weight:600;flex:1;min-width:150px;}
+  .periodo-banner{background:#fff;border-radius:12px;padding:12px 14px;margin:12px 0;box-shadow:0 2px 8px rgba(0,0,0,.06);border-left:5px solid var(--naranja);}
+  .periodo-banner .titulo{font-weight:700;color:var(--rojo);font-size:14px;display:block;margin-bottom:8px;}
+  .periodo-banner .fila{display:flex;flex-wrap:wrap;gap:12px;}
+  .periodo-banner .campo{display:flex;flex-direction:column;gap:3px;flex:1;min-width:130px;}
   .periodo-banner label{font-size:11px;color:#78909c;text-transform:uppercase;letter-spacing:.5px;}
-  .periodo-banner .titulo{font-weight:700;color:var(--rojo);font-size:15px;}
-  .barra{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin:16px 0;}
-  .barra input[type=text]{flex:1;min-width:180px;padding:10px 12px;border:1px solid var(--borde);border-radius:10px;font-size:14px;}
-  button{cursor:pointer;border:none;border-radius:10px;padding:10px 14px;font-size:14px;font-weight:600;transition:.15s;}
-  .btn-rojo{background:var(--rojo);color:#fff;} .btn-rojo:hover{background:var(--rojo-osc);}
-  .btn-gris{background:var(--gris);color:var(--texto);} .btn-gris:hover{background:#cfd8dc;}
-  .btn-naranja{background:var(--naranja);color:#fff;} .btn-naranja:hover{background:#c95500;}
-  .btn-azul{background:#1565c0;color:#fff;} .btn-azul:hover{background:#0d47a1;}
-  .tarjetas{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin-bottom:16px;}
-  .tarjeta{background:#fff;border-radius:12px;padding:14px;box-shadow:0 2px 8px rgba(0,0,0,.06);border-left:5px solid var(--rojo);}
-  .tarjeta .num{font-size:26px;font-weight:700;}
-  .tarjeta .lbl{font-size:12px;color:#78909c;text-transform:uppercase;letter-spacing:.5px;}
-  .tabla-wrap{background:#fff;border-radius:12px;overflow:auto;box-shadow:0 2px 10px rgba(0,0,0,.07);}
-  table{border-collapse:collapse;width:100%;min-width:820px;}
-  th,td{padding:10px 8px;text-align:center;border-bottom:1px solid #f0e8e2;font-size:14px;}
-  th{background:var(--rojo);color:#fff;position:sticky;top:0;font-size:12px;text-transform:uppercase;letter-spacing:.3px;}
-  td.prod{text-align:left;font-weight:600;}
-  tr.cat td{background:#f3e5e0;font-weight:700;text-align:left;color:var(--rojo-osc);text-transform:uppercase;font-size:12px;letter-spacing:.5px;}
-  input.celda{width:70px;padding:7px;border:1px solid var(--borde);border-radius:8px;text-align:center;font-size:14px;}
-  input.celda:focus{outline:2px solid var(--rojo);}
-  .gasto{font-weight:700;color:var(--naranja);}
-  .estado{font-weight:700;font-size:12px;padding:4px 8px;border-radius:20px;display:inline-block;}
-  .ok{background:#e8f5e9;color:var(--verde);}
-  .bajo{background:#fff3e0;color:var(--naranja);}
-  .agotado{background:#ffebee;color:var(--rojo);}
-  .borrar{background:none;color:#b0a8a2;font-size:18px;padding:2px 8px;}
-  .borrar:hover{color:var(--rojo);}
-  footer{text-align:center;color:#a1887f;font-size:12px;margin-top:16px;}
-  .agregar{background:#fff;border-radius:12px;padding:14px;margin-top:14px;box-shadow:0 2px 8px rgba(0,0,0,.06);display:flex;flex-wrap:wrap;gap:8px;align-items:flex-end;}
-  .agregar label{font-size:12px;color:#78909c;display:block;margin-bottom:3px;}
-  .agregar input{padding:8px;border:1px solid var(--borde);border-radius:8px;font-size:14px;}
-  .historial{background:#fff;border-radius:12px;padding:14px 16px;margin-top:14px;box-shadow:0 2px 8px rgba(0,0,0,.06);}
-  .historial h3{color:var(--rojo);font-size:15px;margin-bottom:8px;}
-  .historial table{min-width:auto;}
-  .historial th{background:#8d6e63;}
-  .modal-fondo{display:none;position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:50;align-items:center;justify-content:center;padding:16px;}
+  .periodo-banner input{padding:9px;border:1px solid var(--borde);border-radius:8px;font-size:15px;}
+  .tarjetas{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px;margin-bottom:12px;}
+  .kpi{background:#fff;border-radius:12px;padding:12px;box-shadow:0 2px 8px rgba(0,0,0,.06);border-left:5px solid var(--rojo);}
+  .kpi .num{font-size:24px;font-weight:800;}
+  .kpi .lbl{font-size:11.5px;color:#78909c;text-transform:uppercase;letter-spacing:.4px;}
+  button{cursor:pointer;border:none;border-radius:10px;padding:11px 14px;font-size:14px;font-weight:600;transition:.15s;}
+  .btn-rojo{background:var(--rojo);color:#fff;} .btn-gris{background:var(--gris);color:var(--texto);}
+  .btn-naranja{background:var(--naranja);color:#fff;} .btn-azul{background:var(--azul);color:#fff;}
+  .btn-verde{background:var(--verde);color:#fff;}
+  .barra{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:12px 0;}
+  #buscar{flex:1;min-width:160px;padding:12px 14px;border:1px solid var(--borde);border-radius:12px;font-size:15px;}
+  .cat-titulo{margin:16px 0 8px;font-weight:800;color:var(--rojo-osc);text-transform:uppercase;font-size:12.5px;letter-spacing:.6px;padding-left:4px;}
+  .cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:12px;}
+  .card{background:#fff;border-radius:14px;padding:14px;box-shadow:0 2px 8px rgba(0,0,0,.07);border-left:6px solid var(--verde);}
+  .card.bajo{border-left-color:var(--naranja);} .card.agotado{border-left-color:var(--rojo);}
+  .card-top{display:flex;justify-content:space-between;align-items:flex-start;gap:8px;margin-bottom:10px;}
+  .card-nom{font-size:16px;font-weight:700;line-height:1.2;}
+  .card-uni{font-size:12px;color:#90a4ae;}
+  .pill{font-weight:700;font-size:11px;padding:4px 9px;border-radius:20px;white-space:nowrap;}
+  .pill.ok{background:#e8f5e9;color:var(--verde);} .pill.bajo{background:#fff3e0;color:var(--naranja);} .pill.agotado{background:#ffebee;color:var(--rojo);}
+  .hay-fila{display:flex;align-items:center;gap:8px;margin-bottom:10px;}
+  .hay-fila label{font-size:13px;color:#546e7a;font-weight:600;flex:1;}
+  .stepper{display:flex;align-items:center;gap:6px;}
+  .stepper button{width:38px;height:44px;padding:0;font-size:22px;border-radius:10px;background:var(--gris);color:var(--texto);line-height:1;}
+  .hay-input{width:74px;height:44px;text-align:center;font-size:20px;font-weight:800;border:2px solid var(--borde);border-radius:10px;}
+  .hay-input:focus{outline:none;border-color:var(--rojo);}
+  .prov-fila{display:flex;align-items:center;gap:8px;margin-bottom:10px;}
+  .prov-fila select{flex:1;padding:9px;border:1px solid var(--borde);border-radius:9px;font-size:14px;background:#fff;color:var(--texto);}
+  .cat-fila{display:flex;align-items:center;gap:8px;margin-bottom:10px;}
+  .cat-fila select{flex:1;padding:9px;border:1px solid var(--borde);border-radius:9px;font-size:13.5px;background:#fafafa;color:#546e7a;}
+  .card-acciones{display:flex;gap:8px;margin-bottom:10px;}
+  .card-acciones button{flex:1;padding:10px;font-size:13.5px;}
+  .card-info{display:flex;justify-content:space-between;font-size:12.5px;color:#607d8b;border-top:1px solid #f0e8e2;padding-top:8px;}
+  .card-info b{color:var(--naranja);}
+  .card .borrar{position:relative;float:right;background:none;color:#c0b8b2;font-size:12px;padding:2px;margin-top:-4px;}
+  footer{text-align:center;color:#a1887f;font-size:12px;margin:18px 0;}
+  /* Modales */
+  .modal-fondo{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:50;align-items:center;justify-content:center;padding:14px;}
   .modal-fondo.abierto{display:flex;}
-  .modal{background:#fff;border-radius:16px;padding:22px;max-width:460px;width:100%;box-shadow:0 10px 40px rgba(0,0,0,.3);max-height:90vh;overflow:auto;}
-  .modal h2{color:var(--rojo);font-size:19px;margin-bottom:6px;}
-  .modal p{font-size:13px;color:#607d8b;margin-bottom:16px;}
-  .modal .campo{margin-bottom:14px;}
+  .modal{background:#fff;border-radius:16px;padding:20px;max-width:460px;width:100%;box-shadow:0 10px 40px rgba(0,0,0,.3);max-height:90vh;overflow:auto;}
+  .modal h2{color:var(--rojo);font-size:18px;margin-bottom:6px;}
+  .modal p{font-size:13px;color:#607d8b;margin-bottom:14px;}
+  .modal .campo{margin-bottom:12px;}
   .modal label{display:block;font-size:12px;color:#78909c;margin-bottom:4px;text-transform:uppercase;letter-spacing:.5px;}
-  .modal input{width:100%;padding:10px;border:1px solid var(--borde);border-radius:8px;font-size:15px;}
+  .modal input{width:100%;padding:11px;border:1px solid var(--borde);border-radius:8px;font-size:16px;}
   .modal .acciones{display:flex;gap:10px;justify-content:flex-end;margin-top:8px;flex-wrap:wrap;}
   .nota{font-size:12px;background:#e3f2fd;color:#0d47a1;padding:8px 10px;border-radius:8px;margin-top:8px;}
-  @media print{.barra,.agregar,.borrar,button,.modal-fondo,.nube-bar{display:none!important;}body{background:#fff;}}
+  .tabla-mini{width:100%;border-collapse:collapse;font-size:13px;margin-top:6px;}
+  .tabla-mini th,.tabla-mini td{padding:7px 6px;border-bottom:1px solid #f0e8e2;text-align:center;}
+  .tabla-mini th{background:#8d6e63;color:#fff;font-size:11px;text-transform:uppercase;}
+  @media (max-width:520px){
+    .cards{grid-template-columns:1fr;}
+    header h1{font-size:17px;}
+    .barra button{flex:1;}
+  }
+  @media print{.barra,.card-acciones,.borrar,button,.modal-fondo,.nube-bar{display:none!important;}body{background:#fff;}}
 </style>
 </head>
 <body>
 <header>
-  <h1>🥩 Carnicería La Confianza — Control de Inventario</h1>
-  <p>Escribe cuánto había (inicial), cuánto ingresó y cuánto hay hoy. El <b>gasto</b> se calcula solo.</p>
+  <h1>🥩 Carnicería La Confianza</h1>
+  <p>Cada día pon <b>cuánto hay</b> de cada producto. Cuando llegue mercadería, toca <b>＋ Ingreso</b>. La app calcula sola lo gastado.</p>
 </header>
 
 <div class="nube-bar">
-  <span class="nube-estado" id="nubeEstado">💾 Modo local (los datos solo se guardan en este navegador)</span>
-  <button class="btn-azul" onclick="abrirNube()">☁️ Configurar nube compartida</button>
+  <span class="nube-estado" id="nubeEstado">💾 Modo local</span>
+  <button class="btn-azul" onclick="abrirNube()">☁️ Nube</button>
   <button class="btn-gris" onclick="cargarNube(true)">🔄 Actualizar</button>
 </div>
 
 <div class="periodo-banner">
-  <span class="titulo">📅 Periodo actual</span>
-  <div class="campo"><label>Desde (dd/mm/aaaa)</label><input type="text" id="pInicio" placeholder="dd/mm/aaaa" maxlength="10" inputmode="numeric" oninput="mascaraFecha(this)" onchange="editPeriodo()"></div>
-  <div class="campo"><label>Hasta (opcional)</label><input type="text" id="pFin" placeholder="dd/mm/aaaa" maxlength="10" inputmode="numeric" oninput="mascaraFecha(this)" onchange="editPeriodo()"></div>
+  <span class="titulo">📅 Periodo de conteo</span>
+  <div class="fila">
+    <div class="campo"><label>Desde (dd/mm/aaaa)</label><input type="text" id="pInicio" placeholder="dd/mm/aaaa" maxlength="10" inputmode="numeric" oninput="mascaraFecha(this)" onchange="editPeriodo()"></div>
+    <div class="campo"><label>Hasta (opcional)</label><input type="text" id="pFin" placeholder="dd/mm/aaaa" maxlength="10" inputmode="numeric" oninput="mascaraFecha(this)" onchange="editPeriodo()"></div>
+  </div>
 </div>
 
-<div class="tarjetas" id="tarjetas"></div>
+<div class="tarjetas" id="kpis"></div>
 
 <div class="barra">
   <input type="text" id="buscar" placeholder="🔎 Buscar producto...">
-  <button class="btn-gris" onclick="window.print()">🖨️ Imprimir / PDF</button>
-  <button class="btn-gris" onclick="exportarCSV()">⬇️ Exportar CSV</button>
+  <button class="btn-azul" onclick="abrirPedido()">📋 Pedido</button>
+  <button class="btn-gris" onclick="abrirProv()">🏭 Proveedores</button>
+  <button class="btn-gris" onclick="abrirMinimos()">⚙️ Mínimos</button>
+  <button class="btn-gris" onclick="abrirAgregar()">＋ Producto</button>
+  <button class="btn-gris" onclick="exportarCSV()">⬇️ CSV</button>
   <button class="btn-gris" onclick="respaldarJSON()">💾 Respaldar</button>
   <button class="btn-gris" onclick="document.getElementById('archivoRestore').click()">📂 Restaurar</button>
   <input type="file" id="archivoRestore" accept=".json,application/json" style="display:none" onchange="restaurarJSON(this)">
   <button class="btn-naranja" onclick="abrirModal()">🔄 Nuevo periodo</button>
 </div>
 
-<div class="tabla-wrap">
-  <table>
-    <thead>
-      <tr>
-        <th style="text-align:left">Producto</th>
-        <th>Unidad</th>
-        <th>Inicial</th>
-        <th>Ingresos</th>
-        <th>Actual (hoy)</th>
-        <th>Gastado</th>
-        <th>Mínimo</th>
-        <th>Estado</th>
-        <th></th>
-      </tr>
-    </thead>
-    <tbody id="cuerpo"></tbody>
-  </table>
-</div>
+<div id="contenido"></div>
 
-<div class="agregar">
-  <div><label>Producto</label><input type="text" id="nProd" placeholder="Ej. Comino"></div>
-  <div><label>Unidad</label><input type="text" id="nUnidad" placeholder="unidades" style="width:110px"></div>
-  <div><label>Inicial</label><input type="number" id="nInicial" value="0" style="width:80px"></div>
-  <div><label>Categoría</label><input type="text" id="nCat" placeholder="Condimentos" style="width:130px"></div>
-  <div><label>Mínimo</label><input type="number" id="nMin" value="2" style="width:80px"></div>
-  <button class="btn-rojo" onclick="agregarProducto()">＋ Agregar producto</button>
-</div>
-
-<div class="historial" id="historial" style="display:none">
-  <h3>🗂️ Historial de periodos cerrados</h3>
-  <div class="tabla-wrap">
-    <table>
-      <thead><tr><th>Desde</th><th>Hasta</th><th>Total gastado</th><th>Productos</th></tr></thead>
-      <tbody id="cuerpoHist"></tbody>
-    </table>
-  </div>
-</div>
-
-<footer>Gasto = Inicial + Ingresos − Actual · Con nube compartida, todos ven la misma información.</footer>
+<footer>Gastado en el periodo = lo que había al inicio + ingresos − lo que hay hoy. · Con la nube, todos ven lo mismo.</footer>
 
 <!-- Modal nuevo periodo -->
 <div class="modal-fondo" id="modal">
   <div class="modal">
     <h2>🔄 Iniciar nuevo periodo</h2>
-    <p>Se cerrará el periodo actual (se guarda en el historial con sus fechas y lo gastado). El inventario <b>Actual</b> pasará a ser el <b>Inicial</b> del nuevo periodo y los ingresos vuelven a 0.</p>
+    <p>Se cierra el periodo actual y se guarda en el historial (con fechas y lo gastado). Lo que hay hoy pasa a ser el punto de partida del nuevo periodo, y los ingresos vuelven a 0.</p>
     <div class="campo">
-      <label>Fecha en que cierra el periodo actual (dd/mm/aaaa)</label>
+      <label>Fecha en que cierra el periodo actual</label>
       <input type="text" id="mFinAnterior" placeholder="dd/mm/aaaa" maxlength="10" inputmode="numeric" oninput="mascaraFecha(this)">
     </div>
     <div class="campo">
-      <label>Fecha en que inicia el nuevo periodo (dd/mm/aaaa)</label>
+      <label>Fecha en que inicia el nuevo periodo</label>
       <input type="text" id="mInicioNuevo" placeholder="dd/mm/aaaa" maxlength="10" inputmode="numeric" oninput="mascaraFecha(this)">
     </div>
     <div class="acciones">
       <button class="btn-gris" onclick="cerrarModal()">Cancelar</button>
-      <button class="btn-naranja" onclick="confirmarNuevoPeriodo()">Iniciar nuevo periodo</button>
+      <button class="btn-naranja" onclick="confirmarNuevoPeriodo()">Iniciar</button>
     </div>
+    <div id="histBox"></div>
+  </div>
+</div>
+
+<!-- Modal ingreso -->
+<div class="modal-fondo" id="modalIng">
+  <div class="modal">
+    <h2 id="ingTitulo">＋ Registrar ingreso</h2>
+    <p>¿Cuánto <b>ingresó</b> (llegó) hoy? Se suma a lo que hay y no cuenta como gasto.</p>
+    <div class="campo">
+      <label>Cantidad que ingresó</label>
+      <input type="number" id="ingCantidad" min="0" inputmode="numeric" placeholder="0">
+    </div>
+    <div class="acciones">
+      <button class="btn-gris" onclick="cerrarIngreso()">Cancelar</button>
+      <button class="btn-verde" onclick="confirmarIngreso()">Guardar ingreso</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal agregar producto -->
+<div class="modal-fondo" id="modalAdd">
+  <div class="modal">
+    <h2>＋ Agregar producto</h2>
+    <div class="campo"><label>Nombre</label><input type="text" id="nProd" placeholder="Ej. Comino"></div>
+    <div class="campo"><label>Unidad</label><input type="text" id="nUnidad" placeholder="unidades"></div>
+    <div class="campo"><label>Categoría</label><input type="text" id="nCat" placeholder="Condimentos"></div>
+    <div class="campo"><label>Proveedor</label><select id="nProv" style="width:100%;padding:11px;border:1px solid var(--borde);border-radius:8px;font-size:16px;background:#fff"></select></div>
+    <div class="campo"><label>¿Cuánto hay hoy?</label><input type="number" id="nActual" value="0" min="0" inputmode="numeric"></div>
+    <div class="campo"><label>Mínimo para reabastecer</label><input type="number" id="nMin" value="2" min="0" inputmode="numeric"></div>
+    <div class="acciones">
+      <button class="btn-gris" onclick="cerrarAgregar()">Cancelar</button>
+      <button class="btn-rojo" onclick="agregarProducto()">Agregar</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal pedido por proveedor -->
+<div class="modal-fondo" id="modalPedido">
+  <div class="modal">
+    <h2>📋 Armar pedido por proveedor</h2>
+    <p>Se agrupa por proveedor lo que hay que reabastecer. Ajusta cuánto pedir y toca <b>Copiar</b> para enviarlo (por ejemplo por WhatsApp).</p>
+    <label style="display:flex;align-items:center;gap:8px;font-size:13px;margin-bottom:6px"><input type="checkbox" id="pedSoloBajos" checked onchange="renderPedido()"> Solo mostrar los que están por reabastecer o agotados</label>
+    <div id="pedContenido"></div>
+    <div class="acciones">
+      <button class="btn-gris" onclick="pedidoCSV()">⬇️ CSV</button>
+      <button class="btn-naranja" onclick="cerrarPedido()">Cerrar</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal proveedores -->
+<div class="modal-fondo" id="modalProv">
+  <div class="modal">
+    <h2>🏭 Proveedores</h2>
+    <p>Agrega, revisa o quita proveedores. Luego los eliges en cada producto.</p>
+    <div class="campo" style="display:flex;gap:8px">
+      <input type="text" id="nuevoProv" placeholder="Nombre del proveedor" style="flex:1" onkeydown="if(event.key==='Enter')agregarProv()">
+      <button class="btn-azul" onclick="agregarProv()">Agregar</button>
+    </div>
+    <div id="listaProv" style="max-height:50vh;overflow:auto"></div>
+    <div class="acciones"><button class="btn-naranja" onclick="cerrarProv()">Listo</button></div>
+  </div>
+</div>
+
+<!-- Modal mínimos -->
+<div class="modal-fondo" id="modalMin">
+  <div class="modal">
+    <h2>⚙️ Configurar mínimos</h2>
+    <p>Pon el mínimo de cada producto una sola vez. Cuando lo que hay baje a ese número o menos, avisa <b>Reabastecer</b>. Se guardan solos.</p>
+    <div id="listaMin" style="max-height:55vh;overflow:auto"></div>
+    <div class="acciones"><button class="btn-naranja" onclick="cerrarMinimos()">Listo</button></div>
   </div>
 </div>
 
@@ -162,27 +215,20 @@
 <div class="modal-fondo" id="modalNube">
   <div class="modal">
     <h2>☁️ Nube compartida (jsonbin.io)</h2>
-    <p>Conecta esta app a un almacén de jsonbin.io para que todos vean y editen el mismo inventario. La clave se guarda solo en este navegador, no en internet.</p>
-    <div class="campo">
-      <label>Clave de jsonbin (X-Master-Key)</label>
-      <input type="password" id="nbKey" placeholder="Pega aquí tu Master Key">
-    </div>
-    <div class="campo">
-      <label>ID del almacén (Bin ID)</label>
-      <input type="text" id="nbBin" placeholder="Déjalo vacío para crear uno nuevo">
-    </div>
+    <p>Conecta la app a un almacén de jsonbin para que todos vean y editen el mismo inventario. La clave se guarda solo en este navegador.</p>
+    <div class="campo"><label>Clave de jsonbin (X-Master-Key)</label><input type="password" id="nbKey" placeholder="Pega aquí tu Master Key"></div>
+    <div class="campo"><label>ID del almacén (Bin ID)</label><input type="text" id="nbBin" placeholder="Vacío para crear uno nuevo"></div>
     <div class="acciones">
       <button class="btn-gris" onclick="cerrarNube()">Cancelar</button>
-      <button class="btn-azul" onclick="crearBin()">Crear almacén nuevo</button>
+      <button class="btn-azul" onclick="crearBin()">Crear almacén</button>
       <button class="btn-azul" onclick="conectarBin()">Conectar</button>
     </div>
     <div id="nbMsg" class="nota" style="display:none"></div>
-    <div class="nota"><b>Para que todos queden conectados solos:</b> después de crear/conectar el almacén, pulsa el botón verde de abajo, sube el archivo descargado a GitHub (reemplazando el actual) y listo — nadie más tendrá que configurar nada.</div>
+    <div class="nota"><b>Para que todos entren solos:</b> tras crear/conectar, pulsa el botón verde, sube el archivo descargado a GitHub (reemplazando el actual) y listo.</div>
     <div class="acciones" style="justify-content:space-between">
-      <button class="btn-gris" onclick="descargarCompartida()" style="background:#2e7d32;color:#fff">⬇️ Descargar versión para todos</button>
+      <button class="btn-verde" onclick="descargarCompartida()">⬇️ Versión para todos</button>
       <button class="btn-gris" onclick="desconectarNube()">Desconectar</button>
     </div>
-    <div class="nota">Comparte el enlace solo con tu equipo de confianza: quien lo abra podrá ver y editar el inventario.</div>
   </div>
 </div>
 
@@ -219,14 +265,13 @@ const DEFAULTS = [
 
 const KEY = "inventario_confianza_v2";
 const CLOUD_KEY = "inventario_confianza_cloud";
-/* === Configuración compartida para TODOS ===
-   Se llena sola al usar el botón "Descargar versión para todos".
-   Cuando tiene datos, cualquiera que abra el enlace queda conectado automáticamente. */
-const SHARED = { bin: "6a7a4670da38895dfed2d885", key: "$2a$10$V41FFe.9wLPEvRIroALzpOfhkk4Ul6l6ggiAXWecD3GVd1Qhy7g9y" };
+/* === Configuración compartida para TODOS (la llena el botón "Versión para todos") === */
+const SHARED = { bin: "", key: "" };
 let estado_app = cargar();
 let productos = estado_app.productos;
 let cloud = cargarCloudCfg();
 if(SHARED.bin && SHARED.key){ cloud = {bin:SHARED.bin, key:SHARED.key}; guardarCloudCfg(); }
+let ingActual = -1; // producto al que se le registra ingreso
 
 function hoyISO(){ return new Date().toISOString().slice(0,10); }
 function isoToDMY(iso){ if(!iso) return ""; const [y,m,d]=iso.split("-"); return `${d}/${m}/${y}`; }
@@ -247,15 +292,25 @@ function mascaraFecha(el){
 }
 
 function cargar(){
-  try{
-    const g = localStorage.getItem(KEY);
-    if(g){ const o = JSON.parse(g); if(o && o.productos) return o; }
-  }catch(e){}
-  try{
-    const v1 = localStorage.getItem("inventario_confianza_v1");
-    if(v1){ const arr = JSON.parse(v1); if(Array.isArray(arr)) return {productos:arr, periodoInicio:hoyISO(), periodoFin:"", historial:[]}; }
-  }catch(e){}
-  return { productos: DEFAULTS.map(d=>({...d, ingresos:0, actual:d.inicial})), periodoInicio: hoyISO(), periodoFin: "", historial: [] };
+  let o=null;
+  try{ const g = localStorage.getItem(KEY); if(g){ const p = JSON.parse(g); if(p && p.productos) o=p; } }catch(e){}
+  if(!o) o = { productos: DEFAULTS.map(d=>({...d, ingresos:0, actual:d.inicial, fechaActual:hoyISO()})), periodoInicio: hoyISO(), periodoFin: "", historial: [], proveedores: [] };
+  return normaliza(o);
+}
+function normaliza(o){
+  o.proveedores = o.proveedores || [];
+  o.historial = o.historial || [];
+  (o.productos||[]).forEach(it=>{ if(it.proveedor===undefined) it.proveedor=""; });
+  return o;
+}
+const CAT_ORDER = ["Salsas y condimentos","Granos y abarrotes","Bebidas","Limpieza e insumos"];
+function catRank(c){ const i=CAT_ORDER.indexOf(c); return i<0?999:i; }
+function ordenados(){
+  return productos.map((it,i)=>({it,i})).sort((a,b)=>{
+    const r=catRank(a.it.cat)-catRank(b.it.cat); if(r) return r;
+    if(a.it.cat!==b.it.cat) return a.it.cat.localeCompare(b.it.cat,'es');
+    return a.it.nombre.localeCompare(b.it.nombre,'es',{sensitivity:'base'});
+  });
 }
 function guardarLocal(){ try{localStorage.setItem(KEY, JSON.stringify(estado_app));}catch(e){} }
 function guardar(){ guardarLocal(); guardarNube(); }
@@ -265,80 +320,60 @@ function cargarCloudCfg(){ try{ return JSON.parse(localStorage.getItem(CLOUD_KEY
 function guardarCloudCfg(){ try{ localStorage.setItem(CLOUD_KEY, JSON.stringify(cloud)); }catch(e){} }
 function nubeOn(){ return !!(cloud.key && cloud.bin); }
 function setEstadoNube(txt,color){ const e=document.getElementById("nubeEstado"); if(e){ e.textContent=txt; e.style.color=color||"#455a64"; } }
-function abrirNube(){
-  document.getElementById("nbKey").value = cloud.key || "";
-  document.getElementById("nbBin").value = cloud.bin || "";
-  document.getElementById("nbMsg").style.display="none";
-  document.getElementById("modalNube").classList.add("abierto");
-}
+function abrirNube(){ document.getElementById("nbKey").value=cloud.key||""; document.getElementById("nbBin").value=cloud.bin||""; document.getElementById("nbMsg").style.display="none"; document.getElementById("modalNube").classList.add("abierto"); }
 function cerrarNube(){ document.getElementById("modalNube").classList.remove("abierto"); }
-function nbMostrar(msg,color){ const e=document.getElementById("nbMsg"); e.style.display="block"; e.textContent=msg; e.style.background = color==="err"?"#ffebee":"#e8f5e9"; e.style.color = color==="err"?"#c62828":"#2e7d32"; }
-function desconectarNube(){ cloud={key:"",bin:""}; guardarCloudCfg(); setEstadoNube("💾 Modo local (los datos solo se guardan en este navegador)","#455a64"); cerrarNube(); }
-
+function nbMostrar(msg,color){ const e=document.getElementById("nbMsg"); e.style.display="block"; e.textContent=msg; e.style.background=color==="err"?"#ffebee":"#e8f5e9"; e.style.color=color==="err"?"#c62828":"#2e7d32"; }
+function desconectarNube(){ cloud={key:"",bin:""}; guardarCloudCfg(); setEstadoNube("💾 Modo local","#455a64"); cerrarNube(); }
 async function descargarCompartida(){
-  if(!nubeOn()){ nbMostrar("Primero crea o conecta un almacén (arriba).","err"); return; }
+  if(!nubeOn()){ nbMostrar("Primero crea o conecta un almacén.","err"); return; }
   nbMostrar("Generando versión compartida...","ok");
   try{
     const resp = await fetch(location.href.split("#")[0].split("?")[0]);
     let src = await resp.text();
     const linea = 'const SHARED = { bin: "'+cloud.bin+'", key: "'+cloud.key+'" };';
-    if(!/const SHARED = \{[^}]*\};/.test(src)){ nbMostrar("No encontré el punto de configuración en el archivo.","err"); return; }
+    if(!/const SHARED = \{[^}]*\};/.test(src)){ nbMostrar("No encontré el punto de configuración.","err"); return; }
     src = src.replace(/const SHARED = \{[^}]*\};/, linea);
     const blob = new Blob([src], {type:"text/html"});
-    const a = document.createElement("a"); a.href = URL.createObjectURL(blob);
-    a.download = "inventario_la_confianza.html"; a.click();
-    nbMostrar("✅ Descargado. Sube ese archivo a GitHub (reemplaza el actual) y todos quedarán conectados solos.","ok");
-  }catch(e){ nbMostrar("Error al generar: "+e.message,"err"); }
+    const a = document.createElement("a"); a.href=URL.createObjectURL(blob); a.download="inventario_la_confianza.html"; a.click();
+    nbMostrar("✅ Descargado. Sube ese archivo a GitHub y todos quedarán conectados solos.","ok");
+  }catch(e){ nbMostrar("Error: "+e.message,"err"); }
 }
 async function crearBin(){
   const key = document.getElementById("nbKey").value.trim();
   if(!key){ nbMostrar("Escribe tu clave (Master Key) primero.","err"); return; }
   nbMostrar("Creando almacén...","ok");
   try{
-    const r = await fetch("https://api.jsonbin.io/v3/b",{
-      method:"POST",
-      headers:{"Content-Type":"application/json","X-Master-Key":key,"X-Bin-Name":"Inventario La Confianza","X-Bin-Private":"true"},
-      body: JSON.stringify(estado_app)
-    });
+    const r = await fetch("https://api.jsonbin.io/v3/b",{ method:"POST", headers:{"Content-Type":"application/json","X-Master-Key":key,"X-Bin-Name":"Inventario La Confianza","X-Bin-Private":"true"}, body:JSON.stringify(estado_app) });
     const j = await r.json();
     if(!r.ok){ throw new Error((j&&j.message)||("HTTP "+r.status)); }
-    const binId = j.metadata && j.metadata.id;
-    cloud = {key, bin:binId}; guardarCloudCfg();
-    document.getElementById("nbBin").value = binId;
-    nbMostrar("✅ Almacén creado. ID: "+binId+" — cópialo para tu equipo.","ok");
-    setEstadoNube("☁️ Conectado a la nube","#2e7d32");
+    cloud = {key, bin:j.metadata&&j.metadata.id}; guardarCloudCfg();
+    document.getElementById("nbBin").value = cloud.bin;
+    nbMostrar("✅ Almacén creado. ID: "+cloud.bin,"ok");
+    setEstadoNube("☁️ Conectado","#2e7d32");
   }catch(e){ nbMostrar("Error al crear: "+e.message,"err"); }
 }
 async function conectarBin(){
-  const key = document.getElementById("nbKey").value.trim();
-  const bin = document.getElementById("nbBin").value.trim();
-  if(!key || !bin){ nbMostrar("Escribe la clave y el ID del almacén.","err"); return; }
-  cloud = {key, bin}; guardarCloudCfg();
-  nbMostrar("Conectando...","ok");
+  const key=document.getElementById("nbKey").value.trim(); const bin=document.getElementById("nbBin").value.trim();
+  if(!key||!bin){ nbMostrar("Escribe la clave y el ID del almacén.","err"); return; }
+  cloud={key,bin}; guardarCloudCfg(); nbMostrar("Conectando...","ok");
   const ok = await cargarNube(false);
-  if(ok){ nbMostrar("✅ Conectado. La información ahora es compartida.","ok"); setTimeout(cerrarNube, 900); }
+  if(ok){ nbMostrar("✅ Conectado. La información ahora es compartida.","ok"); setTimeout(cerrarNube,900); }
 }
-
 async function cargarNube(manual){
   if(!nubeOn()){ if(manual) setEstadoNube("💾 Modo local — configura la nube para compartir","#ef6c00"); return false; }
-  setEstadoNube("☁️ Cargando de la nube...","#ef6c00");
+  setEstadoNube("☁️ Cargando...","#ef6c00");
   try{
     const r = await fetch("https://api.jsonbin.io/v3/b/"+encodeURIComponent(cloud.bin)+"/latest",{ headers:{"X-Master-Key":cloud.key} });
     if(!r.ok){ throw new Error("HTTP "+r.status); }
-    const j = await r.json();
-    const rec = j.record;
+    const j = await r.json(); const rec = j.record;
     if(rec && Array.isArray(rec.productos)){
-      estado_app = rec; estado_app.historial = estado_app.historial||[]; productos = estado_app.productos;
+      estado_app=normaliza(rec); productos=estado_app.productos;
       guardarLocal(); render();
-      setEstadoNube("☁️ Conectado — información compartida (actualizado "+new Date().toLocaleTimeString()+")","#2e7d32");
+      setEstadoNube("☁️ Conectado (actualizado "+new Date().toLocaleTimeString()+")","#2e7d32");
       return true;
-    } else {
-      setEstadoNube("☁️ Almacén vacío — se subió el inventario actual","#ef6c00");
-      await guardarNube(true); return true;
-    }
+    } else { setEstadoNube("☁️ Almacén vacío — se subió lo actual","#ef6c00"); await guardarNube(true); return true; }
   }catch(e){ setEstadoNube("⚠️ Error de nube: "+e.message,"#c62828"); return false; }
 }
-
 let saveTimer=null;
 function guardarNube(inmediato){
   if(!nubeOn()) return;
@@ -346,22 +381,18 @@ function guardarNube(inmediato){
   const doSave = async ()=>{
     setEstadoNube("☁️ Guardando...","#ef6c00");
     try{
-      const r = await fetch("https://api.jsonbin.io/v3/b/"+encodeURIComponent(cloud.bin),{
-        method:"PUT",
-        headers:{"Content-Type":"application/json","X-Master-Key":cloud.key},
-        body: JSON.stringify(estado_app)
-      });
+      const r = await fetch("https://api.jsonbin.io/v3/b/"+encodeURIComponent(cloud.bin),{ method:"PUT", headers:{"Content-Type":"application/json","X-Master-Key":cloud.key}, body:JSON.stringify(estado_app) });
       if(!r.ok){ throw new Error("HTTP "+r.status); }
-      setEstadoNube("☁️ Guardado en la nube ("+new Date().toLocaleTimeString()+")","#2e7d32");
-    }catch(e){ setEstadoNube("⚠️ No se pudo guardar en la nube: "+e.message,"#c62828"); }
+      setEstadoNube("☁️ Guardado ("+new Date().toLocaleTimeString()+")","#2e7d32");
+    }catch(e){ setEstadoNube("⚠️ No se pudo guardar: "+e.message,"#c62828"); }
   };
-  if(inmediato) doSave(); else saveTimer=setTimeout(doSave, 900);
+  if(inmediato) doSave(); else saveTimer=setTimeout(doSave,900);
 }
 
-/* ---------- Lógica de inventario ---------- */
+/* ---------- Lógica ---------- */
 function gasto(it){ return Math.max(0, (Number(it.inicial)||0)+(Number(it.ingresos)||0)-(Number(it.actual)||0)); }
 function estadoStock(it){
-  const a = Number(it.actual)||0;
+  const a=Number(it.actual)||0;
   if(a<=0) return {t:"Agotado", c:"agotado"};
   if(a<=(Number(it.min)||0)) return {t:"Reabastecer", c:"bajo"};
   return {t:"OK", c:"ok"};
@@ -372,157 +403,264 @@ function render(){
   document.getElementById("pInicio").value = isoToDMY(estado_app.periodoInicio) || "";
   document.getElementById("pFin").value = isoToDMY(estado_app.periodoFin) || "";
   const filtro = (document.getElementById("buscar").value||"").toLowerCase();
-  const cuerpo = document.getElementById("cuerpo");
-  cuerpo.innerHTML = "";
+  const cont = document.getElementById("contenido");
+  cont.innerHTML = "";
   let catActual = "";
-  productos.forEach((it, i)=>{
+  let grid = null;
+  ordenados().forEach(o=>{
+    const it=o.it, i=o.i;
     if(filtro && !it.nombre.toLowerCase().includes(filtro)) return;
     if(it.cat !== catActual){
       catActual = it.cat;
-      const trc = document.createElement("tr");
-      trc.className = "cat";
-      trc.innerHTML = `<td colspan="9">${it.cat}</td>`;
-      cuerpo.appendChild(trc);
+      const h = document.createElement("div"); h.className="cat-titulo"; h.textContent=it.cat; cont.appendChild(h);
+      grid = document.createElement("div"); grid.className="cards"; cont.appendChild(grid);
     }
     const es = estadoStock(it);
-    const tr = document.createElement("tr");
-    tr.innerHTML = `
-      <td class="prod">${it.nombre}</td>
-      <td>${it.unidad}</td>
-      <td><input class="celda" type="number" min="0" value="${it.inicial}" onchange="edit(${i},'inicial',this.value)"></td>
-      <td><input class="celda" type="number" min="0" value="${it.ingresos}" onchange="edit(${i},'ingresos',this.value)"></td>
-      <td><input class="celda" type="number" min="0" value="${it.actual}" onchange="edit(${i},'actual',this.value)"></td>
-      <td class="gasto">${gasto(it)}</td>
-      <td><input class="celda" type="number" min="0" value="${it.min}" onchange="edit(${i},'min',this.value)"></td>
-      <td><span class="estado ${es.c}">${es.t}</span></td>
-      <td><button class="borrar" title="Eliminar" onclick="eliminar(${i})">✕</button></td>
+    const card = document.createElement("div");
+    card.className = "card "+es.c;
+    card.innerHTML = `
+      <button class="borrar" title="Eliminar" onclick="eliminar(${i})">✕ quitar</button>
+      <div class="card-top">
+        <div><div class="card-nom">${it.nombre}</div><div class="card-uni">${it.unidad}</div></div>
+        <span class="pill ${es.c}">${es.t}</span>
+      </div>
+      <div class="hay-fila">
+        <label>¿Cuánto hay hoy?</label>
+        <div class="stepper">
+          <button onclick="paso(${i},-1)">−</button>
+          <input class="hay-input" type="number" min="0" inputmode="numeric" value="${it.actual}" onchange="setActual(${i},this.value)">
+          <button onclick="paso(${i},1)">＋</button>
+        </div>
+      </div>
+      <div class="prov-fila">
+        <span>🏷️</span>
+        <select onchange="setProveedor(${i}, this.value)">${opcionesProveedor(it.proveedor)}</select>
+      </div>
+      <div class="cat-fila">
+        <span>📂</span>
+        <select onchange="setCategoria(${i}, this.value)">${opcionesCategoria(it.cat)}</select>
+      </div>
+      <div class="card-acciones">
+        <button class="btn-verde" onclick="abrirIngreso(${i})">＋ Ingreso</button>
+      </div>
+      <div class="card-info">
+        <span>Gastado: <b>${gasto(it)}</b> ${it.unidad}</span>
+        <span>Ingresó: ${Number(it.ingresos)||0}</span>
+      </div>
     `;
-    cuerpo.appendChild(tr);
+    grid.appendChild(card);
   });
-  resumen();
-  renderHistorial();
+  if(!cont.innerHTML) cont.innerHTML = '<p style="text-align:center;color:#90a4ae;padding:30px">No hay productos que coincidan.</p>';
+  kpis();
 }
 
-function resumen(){
+function kpis(){
   const totalProd = productos.length;
   const totalGasto = productos.reduce((s,it)=>s+gasto(it),0);
   const reabastecer = productos.filter(it=>{const a=Number(it.actual)||0;return a>0 && a<=(Number(it.min)||0);}).length;
   const agotados = productos.filter(it=>(Number(it.actual)||0)<=0).length;
-  document.getElementById("tarjetas").innerHTML = `
-    <div class="tarjeta"><div class="lbl">Productos</div><div class="num">${totalProd}</div></div>
-    <div class="tarjeta" style="border-color:#ef6c00"><div class="lbl">Total gastado</div><div class="num" style="color:#ef6c00">${totalGasto}</div></div>
-    <div class="tarjeta" style="border-color:#f9a825"><div class="lbl">Por reabastecer</div><div class="num" style="color:#f9a825">${reabastecer}</div></div>
-    <div class="tarjeta" style="border-color:#c62828"><div class="lbl">Agotados</div><div class="num" style="color:#c62828">${agotados}</div></div>
+  document.getElementById("kpis").innerHTML = `
+    <div class="kpi"><div class="lbl">Productos</div><div class="num">${totalProd}</div></div>
+    <div class="kpi" style="border-color:#ef6c00"><div class="lbl">Total gastado</div><div class="num" style="color:#ef6c00">${totalGasto}</div></div>
+    <div class="kpi" style="border-color:#f9a825"><div class="lbl">Por reabastecer</div><div class="num" style="color:#f9a825">${reabastecer}</div></div>
+    <div class="kpi" style="border-color:#c62828"><div class="lbl">Agotados</div><div class="num" style="color:#c62828">${agotados}</div></div>
   `;
 }
 
-function renderHistorial(){
-  const cont = document.getElementById("historial");
-  const cuerpo = document.getElementById("cuerpoHist");
-  const h = estado_app.historial || [];
-  if(h.length===0){ cont.style.display="none"; return; }
-  cont.style.display="block";
-  cuerpo.innerHTML = h.slice().reverse().map(p=>`
-    <tr>
-      <td>${fmtFecha(p.desde)}</td>
-      <td>${fmtFecha(p.hasta)}</td>
-      <td class="gasto">${p.totalGasto}</td>
-      <td>${p.numProductos}</td>
-    </tr>`).join("");
+/* Poner "cuánto hay hoy" (conteo) */
+function setActual(i,val){ productos[i].actual = Math.max(0, Number(val)||0); productos[i].fechaActual = hoyISO(); guardar(); render(); }
+function paso(i,d){ productos[i].actual = Math.max(0,(Number(productos[i].actual)||0)+d); productos[i].fechaActual=hoyISO(); guardar(); render(); }
+
+/* Ingreso (llegó mercadería): suma a lo que hay, no es gasto */
+function abrirIngreso(i){ ingActual=i; document.getElementById("ingTitulo").textContent="＋ Ingreso: "+productos[i].nombre; document.getElementById("ingCantidad").value=""; document.getElementById("modalIng").classList.add("abierto"); setTimeout(()=>document.getElementById("ingCantidad").focus(),100); }
+function cerrarIngreso(){ document.getElementById("modalIng").classList.remove("abierto"); }
+function confirmarIngreso(){
+  const n = Number(document.getElementById("ingCantidad").value)||0;
+  if(n<=0){ cerrarIngreso(); return; }
+  const it = productos[ingActual];
+  it.ingresos = (Number(it.ingresos)||0) + n;
+  it.actual = (Number(it.actual)||0) + n;
+  it.fechaActual = hoyISO();
+  guardar(); cerrarIngreso(); render();
 }
 
-function edit(i, campo, val){ productos[i][campo] = Number(val)||0; guardar(); render(); }
-function editPeriodo(){
-  const ini = document.getElementById("pInicio").value.trim();
-  const fin = document.getElementById("pFin").value.trim();
-  if(ini){ const iso=dmyToISO(ini); if(iso===null){ alert("Fecha 'Desde' inválida. Usa dd/mm/aaaa."); return; } estado_app.periodoInicio=iso; }
-  else estado_app.periodoInicio="";
-  if(fin){ const iso=dmyToISO(fin); if(iso===null){ alert("Fecha 'Hasta' inválida. Usa dd/mm/aaaa."); return; } estado_app.periodoFin=iso; }
-  else estado_app.periodoFin="";
-  guardar();
-}
 function eliminar(i){ if(confirm("¿Eliminar "+productos[i].nombre+"?")){ productos.splice(i,1); guardar(); render(); } }
+
+/* Agregar producto */
+function abrirAgregar(){ ["nProd","nUnidad","nCat"].forEach(id=>document.getElementById(id).value=""); document.getElementById("nActual").value="0"; document.getElementById("nMin").value="2"; document.getElementById("nProv").innerHTML=opcionesProveedor(""); document.getElementById("modalAdd").classList.add("abierto"); }
+function cerrarAgregar(){ document.getElementById("modalAdd").classList.remove("abierto"); }
 function agregarProducto(){
   const nombre = document.getElementById("nProd").value.trim();
   if(!nombre){ alert("Escribe el nombre del producto."); return; }
-  const inicial = Number(document.getElementById("nInicial").value)||0;
-  productos.push({
-    cat: document.getElementById("nCat").value.trim() || "Otros",
-    nombre,
-    unidad: document.getElementById("nUnidad").value.trim() || "unidades",
-    inicial, ingresos:0, actual:inicial,
-    min: Number(document.getElementById("nMin").value)||0
-  });
-  document.getElementById("nProd").value=""; document.getElementById("nUnidad").value="";
-  document.getElementById("nInicial").value="0"; document.getElementById("nCat").value="";
-  document.getElementById("nMin").value="2";
-  guardar(); render();
+  const actual = Number(document.getElementById("nActual").value)||0;
+  let prov = document.getElementById("nProv").value;
+  if(prov==="__nuevo__"){ prov=(prompt("Nombre del nuevo proveedor:")||"").trim(); }
+  if(prov && !estado_app.proveedores.includes(prov)) estado_app.proveedores.push(prov);
+  productos.push({ cat:document.getElementById("nCat").value.trim()||"Otros", nombre, unidad:document.getElementById("nUnidad").value.trim()||"unidades", inicial:actual, ingresos:0, actual, min:Number(document.getElementById("nMin").value)||0, proveedor:prov||"", fechaActual:hoyISO() });
+  guardar(); cerrarAgregar(); render();
 }
 
+/* Mínimos */
+function abrirMinimos(){
+  document.getElementById("listaMin").innerHTML = productos.map((it,i)=>`
+    <div style="display:flex;align-items:center;justify-content:space-between;gap:10px;padding:9px 4px;border-bottom:1px solid #f0e8e2">
+      <span style="font-size:14px">${it.nombre} <small style="color:#90a4ae">(${it.unidad})</small></span>
+      <input class="hay-input" style="height:38px;width:64px;font-size:16px" type="number" min="0" inputmode="numeric" value="${it.min}" onchange="editMin(${i},this.value)">
+    </div>`).join("");
+  document.getElementById("modalMin").classList.add("abierto");
+}
+function cerrarMinimos(){ document.getElementById("modalMin").classList.remove("abierto"); }
+function editMin(i,val){ productos[i].min = Number(val)||0; guardar(); render(); }
+
+/* ---- Proveedores y categoría (desplegables) ---- */
+function escHtml(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+function escAttr(s){ return escHtml(s).replace(/"/g,'&quot;'); }
+function opcionesProveedor(sel){
+  const ps = estado_app.proveedores||[];
+  let html = '<option value="">— Proveedor —</option>';
+  html += ps.map(p=>`<option value="${escAttr(p)}" ${p===sel?'selected':''}>${escHtml(p)}</option>`).join('');
+  html += '<option value="__nuevo__">＋ Agregar proveedor…</option>';
+  return html;
+}
+function setProveedor(i,val){
+  if(val==="__nuevo__"){
+    const nombre=(prompt("Nombre del nuevo proveedor:")||"").trim();
+    if(!nombre){ render(); return; }
+    if(!estado_app.proveedores.includes(nombre)) estado_app.proveedores.push(nombre);
+    productos[i].proveedor=nombre;
+  } else { productos[i].proveedor=val; }
+  guardar(); render();
+}
+function opcionesCategoria(sel){
+  const cats = Array.from(new Set([...CAT_ORDER, ...productos.map(p=>p.cat)])).filter(Boolean);
+  let html = cats.map(c=>`<option value="${escAttr(c)}" ${c===sel?'selected':''}>${escHtml(c)}</option>`).join('');
+  html += '<option value="__nueva__">＋ Nueva categoría…</option>';
+  return html;
+}
+function setCategoria(i,val){
+  if(val==="__nueva__"){ const c=(prompt("Nombre de la categoría:")||"").trim(); if(!c){ render(); return; } productos[i].cat=c; }
+  else productos[i].cat=val;
+  guardar(); render();
+}
+/* Gestionar proveedores (renombrar/eliminar) */
+function abrirProv(){ renderProv(); document.getElementById("modalProv").classList.add("abierto"); }
+function cerrarProv(){ document.getElementById("modalProv").classList.remove("abierto"); }
+function renderProv(){
+  const ps = estado_app.proveedores||[];
+  const cont = document.getElementById("listaProv");
+  cont.innerHTML = ps.length ? ps.map((p,k)=>`
+    <div style="display:flex;align-items:center;gap:8px;padding:8px 2px;border-bottom:1px solid #f0e8e2">
+      <span style="flex:1;font-size:14px">${escHtml(p)}</span>
+      <button class="btn-gris" style="padding:6px 10px;font-size:12px" onclick="borrarProv(${k})">Quitar</button>
+    </div>`).join('') : '<p style="color:#90a4ae;text-align:center;padding:12px">Aún no hay proveedores.</p>';
+}
+function agregarProv(){
+  const inp=document.getElementById("nuevoProv"); const nombre=(inp.value||"").trim();
+  if(!nombre) return;
+  if(!estado_app.proveedores.includes(nombre)) estado_app.proveedores.push(nombre);
+  inp.value=""; guardar(); renderProv(); render();
+}
+function borrarProv(k){
+  const nombre = estado_app.proveedores[k];
+  if(!confirm("¿Quitar proveedor \""+nombre+"\"? Los productos que lo tengan quedarán sin proveedor.")) return;
+  estado_app.proveedores.splice(k,1);
+  productos.forEach(it=>{ if(it.proveedor===nombre) it.proveedor=""; });
+  guardar(); renderProv(); render();
+}
+
+/* ---- Pedido por proveedor ---- */
+let pedidoTmp = {};
+function abrirPedido(){ pedidoTmp={}; renderPedido(); document.getElementById("modalPedido").classList.add("abierto"); }
+function cerrarPedido(){ document.getElementById("modalPedido").classList.remove("abierto"); }
+function renderPedido(){
+  const soloBajos = document.getElementById("pedSoloBajos").checked;
+  const cont = document.getElementById("pedContenido");
+  const idxs = productos.map((it,i)=>i).filter(i=>{ if(!soloBajos) return true; const a=Number(productos[i].actual)||0,m=Number(productos[i].min)||0; return a<=m; });
+  idxs.forEach(i=>{ if(pedidoTmp[i]===undefined){ const a=Number(productos[i].actual)||0,m=Number(productos[i].min)||0; pedidoTmp[i]=Math.max(1, m*2-a); } });
+  const grupos={}; idxs.forEach(i=>{ const p=productos[i].proveedor||"Sin proveedor"; (grupos[p]=grupos[p]||[]).push(i); });
+  const nombres = Object.keys(grupos).sort((a,b)=>a.localeCompare(b,'es'));
+  if(!nombres.length){ cont.innerHTML='<p style="color:#90a4ae;text-align:center;padding:20px">No hay productos para pedir. 🎉</p>'; return; }
+  cont.innerHTML = nombres.map(prov=>{
+    const filas = grupos[prov].sort((a,b)=>productos[a].nombre.localeCompare(productos[b].nombre,'es')).map(i=>{
+      const it=productos[i];
+      return `<tr><td style="text-align:left">${escHtml(it.nombre)}</td><td>${it.actual}</td><td>${it.min}</td><td><input class="hay-input" style="height:34px;width:58px;font-size:15px" type="number" min="0" inputmode="numeric" value="${pedidoTmp[i]}" onchange="pedidoTmp[${i}]=Number(this.value)||0"></td></tr>`;
+    }).join('');
+    return `<div style="margin-top:14px"><div style="display:flex;justify-content:space-between;align-items:center;gap:8px"><b style="color:var(--rojo)">🏭 ${escHtml(prov)}</b><button class="btn-verde" style="padding:6px 10px;font-size:12px" onclick="copiarPedido(${JSON.stringify(prov)})">📋 Copiar</button></div><table class="tabla-mini"><tr><th>Producto</th><th>Hay</th><th>Mín</th><th>Pedir</th></tr>${filas}</table></div>`;
+  }).join('');
+}
+function copiarPedido(prov){
+  const idxs = productos.map((it,i)=>i).filter(i=>(productos[i].proveedor||"Sin proveedor")===prov && (pedidoTmp[i]||0)>0);
+  let txt = "Pedido — "+prov+" ("+hoyDMY()+")\n";
+  idxs.forEach(i=>{ txt += "• "+productos[i].nombre+": "+pedidoTmp[i]+" "+productos[i].unidad+"\n"; });
+  if(navigator.clipboard && navigator.clipboard.writeText){ navigator.clipboard.writeText(txt).then(()=>alert("Pedido copiado ✅\nPégalo en WhatsApp o donde quieras.")).catch(()=>prompt("Copia el pedido:",txt)); }
+  else prompt("Copia el pedido:",txt);
+}
+function pedidoCSV(){
+  const soloBajos = document.getElementById("pedSoloBajos").checked;
+  const idxs = productos.map((it,i)=>i).filter(i=>{ if(!soloBajos) return true; const a=Number(productos[i].actual)||0,m=Number(productos[i].min)||0; return a<=m; });
+  let csv="Proveedor,Producto,Unidad,Hay,Minimo,Pedir\n";
+  idxs.sort((a,b)=>(productos[a].proveedor||"").localeCompare(productos[b].proveedor||"",'es')).forEach(i=>{ const it=productos[i]; csv+=[it.proveedor||"Sin proveedor",it.nombre,it.unidad,it.actual,it.min,(pedidoTmp[i]||0)].map(x=>`"${String(x).replace(/"/g,'""')}"`).join(",")+"\n"; });
+  const blob=new Blob(["﻿"+csv],{type:"text/csv;charset=utf-8;"}); const a=document.createElement("a"); a.href=URL.createObjectURL(blob); a.download="pedido_"+hoyISO()+".csv"; a.click();
+}
+
+/* Periodo */
+function editPeriodo(){
+  const ini=document.getElementById("pInicio").value.trim(); const fin=document.getElementById("pFin").value.trim();
+  if(ini){ const iso=dmyToISO(ini); if(iso===null){ alert("Fecha 'Desde' inválida."); return; } estado_app.periodoInicio=iso; } else estado_app.periodoInicio="";
+  if(fin){ const iso=dmyToISO(fin); if(iso===null){ alert("Fecha 'Hasta' inválida."); return; } estado_app.periodoFin=iso; } else estado_app.periodoFin="";
+  guardar();
+}
 function abrirModal(){
   document.getElementById("mFinAnterior").value = isoToDMY(estado_app.periodoFin) || hoyDMY();
   document.getElementById("mInicioNuevo").value = hoyDMY();
+  renderHist();
   document.getElementById("modal").classList.add("abierto");
 }
 function cerrarModal(){ document.getElementById("modal").classList.remove("abierto"); }
+function renderHist(){
+  const h = estado_app.historial||[];
+  const box = document.getElementById("histBox");
+  if(!h.length){ box.innerHTML=""; return; }
+  box.innerHTML = '<div style="margin-top:14px;font-weight:700;color:var(--rojo);font-size:14px">🗂️ Periodos cerrados</div><table class="tabla-mini"><tr><th>Desde</th><th>Hasta</th><th>Gastado</th></tr>'+
+    h.slice().reverse().map(p=>`<tr><td>${fmtFecha(p.desde)}</td><td>${fmtFecha(p.hasta)}</td><td>${p.totalGasto}</td></tr>`).join("")+'</table>';
+}
 function confirmarNuevoPeriodo(){
   const finAnterior = dmyToISO(document.getElementById("mFinAnterior").value);
   const inicioNuevo = dmyToISO(document.getElementById("mInicioNuevo").value);
-  if(!finAnterior || !inicioNuevo){ alert("Ingresa ambas fechas en formato dd/mm/aaaa."); return; }
+  if(!finAnterior || !inicioNuevo){ alert("Ingresa ambas fechas (dd/mm/aaaa)."); return; }
   estado_app.historial = estado_app.historial || [];
-  estado_app.historial.push({
-    desde: estado_app.periodoInicio || "", hasta: finAnterior,
-    totalGasto: productos.reduce((s,it)=>s+gasto(it),0), numProductos: productos.length
-  });
+  estado_app.historial.push({ desde: estado_app.periodoInicio||"", hasta: finAnterior, totalGasto: productos.reduce((s,it)=>s+gasto(it),0), numProductos: productos.length });
   productos.forEach(it=>{ it.inicial = Number(it.actual)||0; it.ingresos = 0; });
   estado_app.periodoInicio = inicioNuevo; estado_app.periodoFin = "";
   guardar(); cerrarModal(); render();
 }
 
+/* Exportar / respaldo */
 function exportarCSV(){
-  let csv = "Periodo desde,"+ (fmtFecha(estado_app.periodoInicio)) +",Periodo hasta,"+ (fmtFecha(estado_app.periodoFin)) +"\n";
-  csv += "Categoria,Producto,Unidad,Inicial,Ingresos,Actual,Gastado,Minimo,Estado\n";
-  productos.forEach(it=>{
-    csv += [it.cat,it.nombre,it.unidad,it.inicial,it.ingresos,it.actual,gasto(it),it.min,estadoStock(it).t]
-      .map(x=>`"${String(x).replace(/"/g,'""')}"`).join(",")+"\n";
-  });
-  if((estado_app.historial||[]).length){
-    csv += "\nHistorial de periodos\nDesde,Hasta,Total gastado,Productos\n";
-    estado_app.historial.forEach(p=>{ csv += [fmtFecha(p.desde),fmtFecha(p.hasta),p.totalGasto,p.numProductos].join(",")+"\n"; });
-  }
+  let csv = "Periodo desde,"+fmtFecha(estado_app.periodoInicio)+",Periodo hasta,"+fmtFecha(estado_app.periodoFin)+"\n";
+  csv += "Categoria,Proveedor,Producto,Unidad,Hay hoy,Ingresos,Gastado,Minimo,Estado\n";
+  productos.forEach(it=>{ csv += [it.cat,it.proveedor||"",it.nombre,it.unidad,it.actual,it.ingresos,gasto(it),it.min,estadoStock(it).t].map(x=>`"${String(x).replace(/"/g,'""')}"`).join(",")+"\n"; });
+  if((estado_app.historial||[]).length){ csv += "\nHistorial de periodos\nDesde,Hasta,Total gastado\n"; estado_app.historial.forEach(p=>{ csv += [fmtFecha(p.desde),fmtFecha(p.hasta),p.totalGasto].join(",")+"\n"; }); }
   const blob = new Blob(["﻿"+csv],{type:"text/csv;charset=utf-8;"});
-  const a = document.createElement("a"); a.href = URL.createObjectURL(blob);
-  a.download = "inventario_la_confianza_"+(estado_app.periodoInicio||"periodo")+".csv"; a.click();
+  const a=document.createElement("a"); a.href=URL.createObjectURL(blob); a.download="inventario_"+(estado_app.periodoInicio||"periodo")+".csv"; a.click();
 }
-
-function respaldarJSON(){
-  const blob = new Blob([JSON.stringify(estado_app, null, 2)], {type:"application/json"});
-  const a = document.createElement("a"); a.href = URL.createObjectURL(blob);
-  a.download = "respaldo_inventario_"+hoyISO()+".json"; a.click();
-}
+function respaldarJSON(){ const blob=new Blob([JSON.stringify(estado_app,null,2)],{type:"application/json"}); const a=document.createElement("a"); a.href=URL.createObjectURL(blob); a.download="respaldo_inventario_"+hoyISO()+".json"; a.click(); }
 function restaurarJSON(input){
-  const file = input.files[0]; if(!file) return;
-  const lector = new FileReader();
-  lector.onload = e=>{
-    try{
-      const o = JSON.parse(e.target.result);
-      if(!o || !Array.isArray(o.productos)) throw new Error("formato");
-      if(!confirm("Esto reemplazará la información actual con la del respaldo. ¿Continuar?")) { input.value=""; return; }
-      estado_app = o; estado_app.historial = estado_app.historial || []; productos = estado_app.productos;
-      guardar(); render(); alert("Información restaurada correctamente.");
-    }catch(err){ alert("El archivo no es un respaldo válido de esta app."); }
-    input.value="";
-  };
+  const file=input.files[0]; if(!file) return;
+  const lector=new FileReader();
+  lector.onload=e=>{ try{ const o=JSON.parse(e.target.result); if(!o||!Array.isArray(o.productos)) throw new Error("f"); if(!confirm("Esto reemplazará la información actual. ¿Continuar?")){ input.value=""; return; } estado_app=normaliza(o); productos=estado_app.productos; guardar(); render(); alert("Información restaurada."); }catch(err){ alert("El archivo no es un respaldo válido."); } input.value=""; };
   lector.readAsText(file);
 }
 
+/* Cerrar modales al tocar afuera */
+["modal","modalIng","modalAdd","modalMin","modalNube","modalPedido","modalProv"].forEach(id=>{
+  document.getElementById(id).addEventListener("click", e=>{ if(e.target.id===id) document.getElementById(id).classList.remove("abierto"); });
+});
 document.getElementById("buscar").addEventListener("input", render);
-document.getElementById("modal").addEventListener("click", e=>{ if(e.target.id==="modal") cerrarModal(); });
-document.getElementById("modalNube").addEventListener("click", e=>{ if(e.target.id==="modalNube") cerrarNube(); });
 window.addEventListener("focus", ()=>{ if(nubeOn()) cargarNube(false); });
 
 render();
-if(nubeOn()){ cargarNube(true); } else { setEstadoNube("💾 Modo local (los datos solo se guardan en este navegador). Toca “Configurar nube compartida” para que todos vean lo mismo.","#455a64"); }
+if(nubeOn()){ cargarNube(true); } else { setEstadoNube("💾 Modo local — toca ☁️ Nube para compartir con todos","#455a64"); }
 </script>
 </body>
 </html>
