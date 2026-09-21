@@ -585,15 +585,31 @@ function renderPedido(){
       const it=productos[i];
       return `<tr><td style="text-align:left">${escHtml(it.nombre)}</td><td>${it.actual}</td><td>${it.min}</td><td><input class="hay-input" style="height:34px;width:58px;font-size:15px" type="number" min="0" inputmode="numeric" value="${pedidoTmp[i]}" onchange="pedidoTmp[${i}]=Number(this.value)||0"></td></tr>`;
     }).join('');
-    return `<div style="margin-top:14px"><div style="display:flex;justify-content:space-between;align-items:center;gap:8px"><b style="color:var(--rojo)">🏭 ${escHtml(prov)}</b><button class="btn-verde" style="padding:6px 10px;font-size:12px" onclick="copiarPedido(${JSON.stringify(prov)})">📋 Copiar</button></div><table class="tabla-mini"><tr><th>Producto</th><th>Hay</th><th>Mín</th><th>Pedir</th></tr>${filas}</table></div>`;
+    return `<div style="margin-top:14px"><div style="display:flex;justify-content:space-between;align-items:center;gap:8px"><b style="color:var(--rojo)">🏭 ${escHtml(prov)}</b><button class="btn-verde" style="padding:6px 10px;font-size:12px" onclick="copiarPedido(${escAttr(JSON.stringify(prov))})">📋 Copiar</button></div><table class="tabla-mini"><tr><th>Producto</th><th>Hay</th><th>Mín</th><th>Pedir</th></tr>${filas}</table></div>`;
   }).join('');
 }
 function copiarPedido(prov){
   const idxs = productos.map((it,i)=>i).filter(i=>(productos[i].proveedor||"Sin proveedor")===prov && (pedidoTmp[i]||0)>0);
+  if(!idxs.length){ alert("No hay nada que pedir de "+prov+" (todo está sobre el mínimo o en 0)."); return; }
   let txt = "Pedido — "+prov+" ("+hoyDMY()+")\n";
   idxs.forEach(i=>{ txt += "• "+productos[i].nombre+": "+pedidoTmp[i]+" "+productos[i].unidad+"\n"; });
-  if(navigator.clipboard && navigator.clipboard.writeText){ navigator.clipboard.writeText(txt).then(()=>alert("Pedido copiado ✅\nPégalo en WhatsApp o donde quieras.")).catch(()=>prompt("Copia el pedido:",txt)); }
-  else prompt("Copia el pedido:",txt);
+  copiarTexto(txt);
+}
+function copiarTexto(txt){
+  const listo = ()=>alert("Pedido copiado ✅\nPégalo en WhatsApp o donde quieras.");
+  if(navigator.clipboard && navigator.clipboard.writeText){
+    navigator.clipboard.writeText(txt).then(listo).catch(()=>fallbackCopy(txt,listo));
+  } else { fallbackCopy(txt,listo); }
+}
+function fallbackCopy(txt,listo){
+  try{
+    const ta=document.createElement("textarea"); ta.value=txt;
+    ta.style.position="fixed"; ta.style.top="0"; ta.style.left="0"; ta.style.opacity="0";
+    document.body.appendChild(ta); ta.focus(); ta.select(); ta.setSelectionRange(0,txt.length);
+    const ok=document.execCommand("copy"); document.body.removeChild(ta);
+    if(ok){ listo(); return; }
+  }catch(e){}
+  prompt("Copia el pedido manualmente:", txt);
 }
 function pedidoCSV(){
   const soloBajos = document.getElementById("pedSoloBajos").checked;
