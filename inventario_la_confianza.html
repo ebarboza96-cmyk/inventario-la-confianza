@@ -81,6 +81,14 @@
 </style>
 </head>
 <body>
+<div id="bloqueo" style="display:none;position:fixed;inset:0;background:var(--rojo);z-index:999;flex-direction:column;align-items:center;justify-content:center;padding:20px;text-align:center;color:#fff">
+  <div style="font-size:46px">🔒</div>
+  <h2 style="margin:10px 0;font-size:22px">Carnicería La Confianza</h2>
+  <p style="opacity:.9;margin-bottom:16px;font-size:14px">Ingresa la clave para entrar</p>
+  <input id="claveInput" type="password" inputmode="text" placeholder="Clave" style="padding:13px;border-radius:10px;border:none;font-size:18px;text-align:center;width:230px;max-width:80%" onkeydown="if(event.key==='Enter')desbloquear()">
+  <div id="claveError" style="color:#ffe0e0;min-height:18px;margin-top:8px;font-size:13px"></div>
+  <button onclick="desbloquear()" style="margin-top:8px;background:#fff;color:var(--rojo);padding:12px 28px;border-radius:10px;font-weight:700;font-size:16px">Entrar</button>
+</div>
 <header>
   <h1>🥩 Carnicería La Confianza</h1>
   <p>Cada día pon <b>cuánto hay</b> de cada producto. Cuando llegue mercadería, toca <b>＋ Ingreso</b>. La app calcula sola lo gastado.</p>
@@ -107,6 +115,7 @@
   <button class="btn-azul" onclick="abrirPedido()">📋 Pedido</button>
   <button class="btn-gris" onclick="abrirProv()">🏭 Proveedores</button>
   <button class="btn-gris" onclick="abrirMinimos()">⚙️ Mínimos</button>
+  <button class="btn-gris" onclick="ponerClave()">🔒 Clave</button>
   <button class="btn-gris" onclick="abrirAgregar()">＋ Producto</button>
   <button class="btn-gris" onclick="exportarCSV()">⬇️ CSV</button>
   <button class="btn-gris" onclick="respaldarJSON()">💾 Respaldar</button>
@@ -300,6 +309,7 @@ function cargar(){
 function normaliza(o){
   o.proveedores = o.proveedores || [];
   o.historial = o.historial || [];
+  o.claveHash = o.claveHash || "";
   (o.productos||[]).forEach(it=>{ if(it.proveedor===undefined) it.proveedor=""; });
   return o;
 }
@@ -368,7 +378,7 @@ async function cargarNube(manual){
     const j = await r.json(); const rec = j.record;
     if(rec && Array.isArray(rec.productos)){
       estado_app=normaliza(rec); productos=estado_app.productos;
-      guardarLocal(); render();
+      guardarLocal(); render(); chequearBloqueo();
       setEstadoNube("☁️ Conectado (actualizado "+new Date().toLocaleTimeString()+")","#2e7d32");
       return true;
     } else { setEstadoNube("☁️ Almacén vacío — se subió lo actual","#ef6c00"); await guardarNube(true); return true; }
@@ -668,6 +678,37 @@ function restaurarJSON(input){
   lector.readAsText(file);
 }
 
+/* ---- Clave de acceso (candado de entrada) ---- */
+let desbloqueado = false;
+async function sha256(txt){ const b = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(txt)); return [...new Uint8Array(b)].map(x=>x.toString(16).padStart(2,'0')).join(''); }
+function chequearBloqueo(){
+  const ov = document.getElementById("bloqueo"); if(!ov) return;
+  if(desbloqueado || !estado_app.claveHash){ ov.style.display="none"; return; }
+  ov.style.display="flex";
+  setTimeout(()=>{ const i=document.getElementById("claveInput"); if(i) i.focus(); },100);
+}
+async function desbloquear(){
+  const inp=document.getElementById("claveInput"); const err=document.getElementById("claveError");
+  const h=await sha256(inp.value||"");
+  if(h===estado_app.claveHash){ desbloqueado=true; inp.value=""; err.textContent=""; document.getElementById("bloqueo").style.display="none"; }
+  else { err.textContent="Clave incorrecta. Intenta de nuevo."; inp.value=""; inp.focus(); }
+}
+async function ponerClave(){
+  if(estado_app.claveHash){
+    const v=prompt("Escribe la clave ACTUAL para cambiarla (o cancela):");
+    if(v===null) return;
+    if(await sha256(v)!==estado_app.claveHash){ alert("La clave actual no es correcta."); return; }
+  }
+  const nueva=prompt("Nueva clave de acceso:\n(déjala vacía y acepta para QUITAR la clave)");
+  if(nueva===null) return;
+  if(nueva===""){ if(confirm("¿Quitar la clave? Cualquiera con el enlace podrá entrar.")){ estado_app.claveHash=""; desbloqueado=true; guardar(); alert("Clave quitada."); } return; }
+  const n2=prompt("Repite la nueva clave:");
+  if(n2===null) return;
+  if(nueva!==n2){ alert("Las claves no coinciden. Intenta de nuevo."); return; }
+  estado_app.claveHash=await sha256(nueva); desbloqueado=true; guardar();
+  alert("✅ Clave guardada. Se pedirá al abrir la app en cualquier dispositivo.");
+}
+
 /* Cerrar modales al tocar afuera */
 ["modal","modalIng","modalAdd","modalMin","modalNube","modalPedido","modalProv"].forEach(id=>{
   document.getElementById(id).addEventListener("click", e=>{ if(e.target.id===id) document.getElementById(id).classList.remove("abierto"); });
@@ -676,6 +717,7 @@ document.getElementById("buscar").addEventListener("input", render);
 window.addEventListener("focus", ()=>{ if(nubeOn()) cargarNube(false); });
 
 render();
+chequearBloqueo();
 if(nubeOn()){ cargarNube(true); } else { setEstadoNube("💾 Modo local — toca ☁️ Nube para compartir con todos","#455a64"); }
 </script>
 </body>
