@@ -275,11 +275,11 @@ const DEFAULTS = [
 const KEY = "inventario_confianza_v2";
 const CLOUD_KEY = "inventario_confianza_cloud";
 /* === Configuración compartida para TODOS (la llena el botón "Versión para todos") === */
-const SHARED = { bin: "", key: "" };
+const SHARED = { bin: "", key: "", tipo: "" };
 let estado_app = cargar();
 let productos = estado_app.productos;
 let cloud = cargarCloudCfg();
-if(SHARED.bin && SHARED.key){ cloud = {bin:SHARED.bin, key:SHARED.key}; guardarCloudCfg(); }
+if(SHARED.bin && SHARED.key){ cloud = {bin:SHARED.bin, key:SHARED.key, tipo:SHARED.tipo||""}; guardarCloudCfg(); }
 let ingActual = -1; // producto al que se le registra ingreso
 
 function hoyISO(){ return new Date().toISOString().slice(0,10); }
@@ -340,7 +340,7 @@ async function descargarCompartida(){
   try{
     const resp = await fetch(location.href.split("#")[0].split("?")[0]);
     let src = await resp.text();
-    const linea = 'const SHARED = { bin: "'+cloud.bin+'", key: "'+cloud.key+'" };';
+    const linea = 'const SHARED = { bin: "'+cloud.bin+'", key: "'+cloud.key+'", tipo: "'+(cloud.tipo||'')+'" };';
     if(!/const SHARED = \{[^}]*\};/.test(src)){ nbMostrar("No encontré el punto de configuración.","err"); return; }
     src = src.replace(/const SHARED = \{[^}]*\};/, linea);
     const blob = new Blob([src], {type:"text/html"});
@@ -369,11 +369,17 @@ async function conectarBin(){
   const ok = await cargarNube(false);
   if(ok){ nbMostrar("✅ Conectado. La información ahora es compartida.","ok"); setTimeout(cerrarNube,900); }
 }
+let saveTimer=null, pushPendiente=false;
+function cabeceraAuth(extra){ const h = Object.assign({}, extra||{}); if(cloud.tipo==='access') h["X-Access-Key"]=cloud.key; else h["X-Master-Key"]=cloud.key; return h; }
+function alternarTipo(){ cloud.tipo = (cloud.tipo==='access')?'master':'access'; guardarCloudCfg(); }
 async function cargarNube(manual){
   if(!nubeOn()){ if(manual) setEstadoNube("💾 Modo local — configura la nube para compartir","#ef6c00"); return false; }
+  if(pushPendiente && !manual){ return false; }
   setEstadoNube("☁️ Cargando...","#ef6c00");
   try{
-    const r = await fetch("https://api.jsonbin.io/v3/b/"+encodeURIComponent(cloud.bin)+"/latest",{ headers:{"X-Master-Key":cloud.key} });
+    const url = "https://api.jsonbin.io/v3/b/"+encodeURIComponent(cloud.bin)+"/latest";
+    let r = await fetch(url,{ headers: cabeceraAuth() });
+    if(r.status===401||r.status===403){ alternarTipo(); r = await fetch(url,{ headers: cabeceraAuth() }); }
     if(!r.ok){ throw new Error("HTTP "+r.status); }
     const j = await r.json(); const rec = j.record;
     if(rec && Array.isArray(rec.productos)){
@@ -384,17 +390,20 @@ async function cargarNube(manual){
     } else { setEstadoNube("☁️ Almacén vacío — se subió lo actual","#ef6c00"); await guardarNube(true); return true; }
   }catch(e){ setEstadoNube("⚠️ Error de nube: "+e.message,"#c62828"); return false; }
 }
-let saveTimer=null;
 function guardarNube(inmediato){
   if(!nubeOn()) return;
+  pushPendiente=true;
   clearTimeout(saveTimer);
   const doSave = async ()=>{
     setEstadoNube("☁️ Guardando...","#ef6c00");
     try{
-      const r = await fetch("https://api.jsonbin.io/v3/b/"+encodeURIComponent(cloud.bin),{ method:"PUT", headers:{"Content-Type":"application/json","X-Master-Key":cloud.key}, body:JSON.stringify(estado_app) });
+      const url = "https://api.jsonbin.io/v3/b/"+encodeURIComponent(cloud.bin);
+      let r = await fetch(url,{ method:"PUT", headers: cabeceraAuth({"Content-Type":"application/json"}), body:JSON.stringify(estado_app) });
+      if(r.status===401||r.status===403){ alternarTipo(); r = await fetch(url,{ method:"PUT", headers: cabeceraAuth({"Content-Type":"application/json"}), body:JSON.stringify(estado_app) }); }
       if(!r.ok){ throw new Error("HTTP "+r.status); }
       setEstadoNube("☁️ Guardado ("+new Date().toLocaleTimeString()+")","#2e7d32");
     }catch(e){ setEstadoNube("⚠️ No se pudo guardar: "+e.message,"#c62828"); }
+    finally{ pushPendiente=false; }
   };
   if(inmediato) doSave(); else saveTimer=setTimeout(doSave,900);
 }
