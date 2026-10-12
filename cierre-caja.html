@@ -975,6 +975,7 @@ function renderAjustes() {
     <p class="note" style="margin-top:0">${rolCaja ? `Conectado como caja de ${esc(CFG.negocio)}.` : 'No está conectado como caja (solo administrador).'}</p>
     <div class="btns">
       ${rolCaja ? '<button class="btn sm bad" type="button" id="a-desc">Desconectar de la caja</button>' : '<button class="btn sm" type="button" data-act="conectar-caja">Conectar como caja</button>'}
+      <button class="btn sm" type="button" id="a-cc">Cambiar clave de la caja</button>
       <button class="btn sm" type="button" id="a-pw">Cambiar PIN de administrador</button>
     </div>
   </section>
@@ -1003,6 +1004,7 @@ function renderAjustes() {
   if (leg.length) $('#a-leg').onclick = async () => { const n = await subirLista(leg, 'aparato'); if (n !== null) { store('cierres', legado().filter(c => !cierres.some(x => x.id === c.id))); renderAjustes(); } };
   if ($('#a-desc')) $('#a-desc').onclick = async () => { await desconectarCaja(); renderAjustes(); };
   $('#a-pw').onclick = cambiarContrasena;
+  $('#a-cc').onclick = cambiarClaveCaja;
   cargarAuditoria();
 }
 // Sube cierres que no están en la nube (respaldo o versión anterior). Solo admin.
@@ -1023,6 +1025,28 @@ async function cargarAuditoria() {
   const { data, error } = await sbAdm.from('cc_auditoria').select('cuando,quien,accion,fecha,turno,motivo').eq('negocio', CFG.id).order('cuando', { ascending: false }).limit(50);
   if (error) { el.innerHTML = `<div class="empty">${esRed(error) ? 'Sin internet.' : 'No se pudo cargar.'}</div>`; return; }
   el.innerHTML = data.length ? data.map(a => `<div class="mrow" style="grid-template-columns:1fr"><span><b>${esc(a.accion)}</b>${a.turno ? ` cierre del ${esc(a.fecha)} (${esc(a.turno)})` : ''} — ${esc(a.motivo)}<br><small class="note">${new Date(a.cuando).toLocaleString('es-CR')} · ${esc(a.quien)}</small></span></div>`).join('') : '<div class="empty">Sin cambios registrados.</div>';
+}
+function cambiarClaveCaja() {
+  abrir(`<h3>Cambiar clave de la caja</h3><p>Es la clave con la que se conectan los aparatos de la caja de ${esc(CFG.negocio)}.</p>
+    <label class="f">Clave nueva (mínimo 6)<input id="k1" type="password" autocomplete="new-password"></label>
+    <label class="f" style="margin-top:10px">Repita la clave<input id="k2" type="password" autocomplete="new-password"></label>
+    <label class="chk"><input type="checkbox" id="k3"> Desconectar los aparatos que ya están conectados (por ejemplo, si un cajero ya no trabaja aquí)</label>
+    <div class="err" id="ke"></div>
+    <div class="btns"><button class="btn" type="button" id="kn">Cancelar</button><button class="btn pri" type="button" id="ks">Cambiar</button></div>`);
+  dlg.onclose = null;
+  $('#kn').onclick = cerrar;
+  $('#ks').onclick = async () => {
+    const p = $('#k1').value.trim(), desc = $('#k3').checked;
+    if (p.length < 6) { $('#ke').textContent = 'Use al menos 6 caracteres'; return; }
+    if (p !== $('#k2').value.trim()) { $('#ke').textContent = 'Las claves no coinciden'; return; }
+    $('#ks').disabled = true;
+    const { error } = await sbAdm.rpc('cc_cambiar_clave_caja', { p_negocio: CFG.id, p_clave: p, p_desconectar: desc });
+    $('#ks').disabled = false;
+    if (error) { $('#ke').textContent = esRed(error) ? 'Sin internet' : error.message; return; }
+    cerrar(); cargarAuditoria();
+    toast(desc ? 'Clave cambiada. Los aparatos de la caja se desconectan en máximo una hora.' : 'Clave de la caja cambiada');
+  };
+  setTimeout(() => $('#k1').focus(), 50);
 }
 function cambiarContrasena() {
   abrir(`<h3>Cambiar PIN de administrador</h3><p>Sirve para las dos apps (carnicería y canchas).</p>
